@@ -1,0 +1,18 @@
+.card {
+    border-radius: 15px;
+    display: flex;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: 0px 0px 8px var(--black50);
+    flex: content;
+}
+
+.ornament {
+    width: 10px;
+    background: linear-gradient(to right, var(--light-orange), var(--yellow));
+}
+
+.cardContent {
+    flex: 1;    
+    padding: 10px;
+}
