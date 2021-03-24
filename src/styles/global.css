@@ -1,0 +1,23 @@
+:root {
+    --light-yellow: #fff9b9;
+    --orange: #f58634;
+    --light-orange: #ffd326;
+    --yellow: #fff212;
+    --dark-gray-text: #606062;
+    --light-gray-subtitle: #96989a;
+    --brown-selected: #bb573880;
+    --black: #000;
+    --white: #fff;
+}
+
+@media(max-width: 1080px) {
+    html {
+        font-size: 93.75%;
+    }
+}
+
+@media(max-width: 720px) {
+    html {
+        font-size: 87.5%;
+    }
+}
