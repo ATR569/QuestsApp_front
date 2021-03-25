@@ -1,0 +1,12 @@
+.input{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: black solid 1px;
+    outline: none;
+    margin-bottom: 0.9rem;
+}
+
+.label{
+    color: var(--orange);
+}
