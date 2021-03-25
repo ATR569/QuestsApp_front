@@ -1,0 +1,91 @@
+.nav_menu {
+    background-image: linear-gradient(to right, var(--light-orange), var( --yellow));
+    width: 275px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    transition: 850ms;
+    padding-top: 180px;
+}
+
+.nav_menu_img{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    background-color: var(--white);
+    border-radius: 10px;
+    width: 250px;
+    top: 10px;
+    padding: 10px 0px 10px 0px;
+}
+
+.nav_text {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+    margin: 0;
+    border: 1px solid;
+    border-left: none;
+    border-right: none;
+    border-image: linear-gradient(to right, #ffffff00,  #ffffff80, #ffffff00);
+    border-image-slice: 1;
+}
+
+.nav_text a {
+    text-decoration: none;
+    color: var(--black);
+    font-size: 18px;
+    width: 95%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0px 16px;
+}
+
+.nav_text img {
+    margin-left: -20px; 
+    margin-right: 10px;
+}
+
+.nav_text:hover {
+    background-color: var(--brown-selected);
+}
+
+
+.nav_text:hover a{
+    color: var(--light-yellow);
+}
+
+.nav_text:active {
+    background-color: var(--brown-selected);
+}
+
+
+.nav_text li a:focus {
+    background-color: var(--brown-selected);
+}
+
+.nav_text:focus-within {
+    background-color: var(--brown-selected);
+}
+
+.nav_text:focus-within img {
+    filter: invert(100%) sepia() saturate(720%) hue-rotate(0deg);
+}
+
+.nav_text:focus-within a {
+    color: var(--light-yellow);
+}
+
+.nav_text:hover img {
+    filter: invert(100%) sepia() saturate(720%) hue-rotate(0deg);
+}
+
+.nav_menu_items {
+    width: 100%;
+}
