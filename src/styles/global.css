@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Roboto';
 }
 
 :root {
@@ -12,6 +13,7 @@
     --dark-gray-text: #606062;
     --light-gray-subtitle: #96989a;
     --brown-selected: #bb573880;
+    --dark-brown-selected: #522414af;
     --black: #000;
     --black50: #00000080;
     --white: #fff;

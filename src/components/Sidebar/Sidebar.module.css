@@ -8,6 +8,7 @@
     top: 0;
     transition: 850ms;
     padding-top: 180px;
+    box-shadow: 0px 0px 8px var(--black50);
 }
 
 .nav_menu_img{
@@ -22,6 +23,7 @@
 }
 
 .nav_text {
+    text-decoration: none;
     display: flex;
     justify-content: start;
     align-items: center;
@@ -36,8 +38,7 @@
     border-image-slice: 1;
 }
 
-.nav_text a {
-    text-decoration: none;
+.nav_text li {
     color: var(--black);
     font-size: 18px;
     width: 95%;
@@ -56,29 +57,24 @@
     background-color: var(--brown-selected);
 }
 
-
-.nav_text:hover a{
+.nav_text:hover li{
     color: var(--light-yellow);
 }
 
-.nav_text:active {
-    background-color: var(--brown-selected);
-}
 
-
-.nav_text li a:focus {
+.nav_text a li:focus {
     background-color: var(--brown-selected);
 }
 
 .nav_text:focus-within {
-    background-color: var(--brown-selected);
+    background-color: var(--dark-brown-selected);
 }
 
 .nav_text:focus-within img {
     filter: invert(100%) sepia() saturate(720%) hue-rotate(0deg);
 }
 
-.nav_text:focus-within a {
+.nav_text:focus-within li {
     color: var(--light-yellow);
 }
 
