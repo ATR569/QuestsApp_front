@@ -1,0 +1,17 @@
+.appTemplate {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	height: 100vh;
+	display: grid;
+	padding: 15px;
+
+	grid-template-rows: 120px 1fr;
+	grid-template-columns: 275px 1fr;
+	grid-template-areas:
+			"menu header"
+			"menu content";
+
+	background-image: url('/background.jpg');
+	background-size: 100vw 100vh;
+}

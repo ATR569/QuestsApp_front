@@ -1,25 +1,26 @@
 .nav_menu {
     background-image: linear-gradient(to right, var(--light-orange), var( --yellow));
     width: 275px;
-    height: 100vh;
     display: flex;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    transition: 850ms;
-    padding-top: 180px;
+    flex-direction: column;
+    align-items: center;
     box-shadow: 0px 0px 8px var(--black50);
+    border-radius: 15px 0px 0px 15px ;
+    overflow: hidden;
+    z-index: 1;
+
+    grid-area: menu;
 }
 
 .nav_menu_img{
     display: flex;
     justify-content: center;
-    position: absolute;
     background-color: var(--white);
-    border-radius: 10px;
+    border-radius: 0px 0px 10px 10px ;
     width: 250px;
     top: 10px;
     padding: 10px 0px 10px 0px;
+    margin-bottom: 50px;
 }
 
 .nav_text {
@@ -60,7 +61,6 @@
 .nav_text:hover li{
     color: var(--light-yellow);
 }
-
 
 .nav_text a li:focus {
     background-color: var(--brown-selected);

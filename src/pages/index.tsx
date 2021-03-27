@@ -1,5 +1,10 @@
+import SideBar from '../components/Sidebar/Sidebar'
+import Header from '../components/Header/Header'
+
 export default function Home() {
     return (
-        <h1>Hello QuestsApp</h1>
+        <div>
+            Home do QuestsApp
+        </div>
     )
 }
