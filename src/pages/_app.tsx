@@ -9,7 +9,9 @@ function MyApp({ Component, pageProps }) {
         <div className={styles.appTemplate}>
             <SideBar />
             <Header title='' subtitle='' imageSrc='/icons/botao-home.svg'/>
-            <Component {...pageProps}/>
+            <div className={styles.content}>
+                <Component {...pageProps}/>
+            </div>
         </div>
     )
 }

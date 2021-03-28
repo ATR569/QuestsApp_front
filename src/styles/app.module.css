@@ -2,7 +2,7 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	height: 100vh;
+	min-height: 100vh;
 	display: grid;
 	padding: 15px;
 
@@ -12,6 +12,10 @@
 			"menu header"
 			"menu content";
 
-	background-image: url('/background.jpg');
-	background-size: 100vw 100vh;
+	background-image: url('/background.wide.jpg');
+	background-attachment: fixed;
+}
+
+.content {
+	grid-area: content;
 }
