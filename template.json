@@ -1,0 +1,32 @@
+{
+    "inicio": {
+        "title": "Início",
+        "subTitle": "Início",
+        "path": "/",
+        "iconSrc": "/icons/botao-home.svg"
+    },
+    "grupos": {
+        "title": "Meus Grupos de Estudos",
+        "subTitle": "Meus Grupos de Estudos",
+        "path": "/grupos_estudos",
+        "iconSrc": "/icons/group.svg"
+    },
+    "questionarios": {
+        "title": "Meus Questionários",
+        "subTitle": "Meus Questionários",
+        "path": "/questionarios",
+        "iconSrc": "/icons/questionario.svg"
+    },
+    "perfil": {
+        "title": "Dados Cadastrais",
+        "subTitle": "Dados Cadastrais",
+        "path": "/dados_cadastrais",
+        "iconSrc": "/icons/users.svg"
+    },
+    "ajuda": {
+        "title": "Ajuda",
+        "subTitle": "Ajuda",
+        "path": "/ajuda",
+        "iconSrc": "/icons/help.svg"
+    }
+}
