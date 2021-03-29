@@ -1,6 +1,6 @@
 import React from 'react'
 import CardContainer from '../components/base/CardContainer'
-import styles from '../styles/home.module.css'
+import styles from '../styles/pages/index.module.css'
 
 interface CardDescription {
     description: string,
