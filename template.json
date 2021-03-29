@@ -20,7 +20,7 @@
     "perfil": {
         "title": "Dados Cadastrais",
         "subTitle": "Dados Cadastrais",
-        "path": "/dados-cadastrais",
+        "path": "/dados_cadastrais",
         "iconSrc": "/icons/users.svg"
     },
     "ajuda": {

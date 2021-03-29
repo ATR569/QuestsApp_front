@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import CardContainer from '../components/base/CardContainer'
 import styles from '../styles/pages/index.module.css'
+
+import {TemplateContext} from '../contexts/TemplateContext'
 
 interface CardDescription {
     description: string,
@@ -26,8 +28,11 @@ const cardDescriptions: Array<CardDescription> = [
     },
 ]
 
-export default class Home extends React.Component {
-    private renderDescription(description: string) {
+export default function Home() {
+    const { setPage } = useContext(TemplateContext)
+    setPage('inicio')
+
+    function renderDescription(description: string) {
         return (
             <div className={styles.description}> 
                 {description} 
@@ -35,7 +40,7 @@ export default class Home extends React.Component {
         )
     }
 
-    private renderPicture(pictureSrc: string) {
+    function renderPicture(pictureSrc: string) {
         return (
             <div className={styles.picture}> 
                 <img src={pictureSrc} alt="image" /> 
@@ -43,26 +48,24 @@ export default class Home extends React.Component {
         )
     }
 
-    private renderCards(cardDescriptions: Array<CardDescription>) {
+    function renderCards(cardDescriptions: Array<CardDescription>) {
         return cardDescriptions.map((cardDescription, index) => {
             return (
                 <CardContainer>
                     <div className={styles.cardContent}>
-                        {index%2 == 0 ? this.renderDescription(cardDescription.description) : this.renderPicture(cardDescription.pictureSrc)}
-                        {index%2 == 0 ? this.renderPicture(cardDescription.pictureSrc) : this.renderDescription(cardDescription.description)}
+                        {index%2 == 0 ? renderDescription(cardDescription.description) : renderPicture(cardDescription.pictureSrc)}
+                        {index%2 == 0 ? renderPicture(cardDescription.pictureSrc) : renderDescription(cardDescription.description)}
                     </div>
                 </CardContainer>
             )
         })
     }
 
-    render () {
         return (
             <div className={styles.home}>
-                { this.renderCards(cardDescriptions) }
+                { renderCards(cardDescriptions) }
             </div>
         )
-    }
 }
 
 // export default function Home() {

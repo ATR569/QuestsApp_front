@@ -1,9 +1,14 @@
-import React, { Component, useContext } from 'react'
+import React, { useContext } from 'react'
 import styles from './Header.module.css'
-import {TemplateContext, Template} from '../../contexts/TemplateContext'
+import {TemplateContext} from '../../contexts/TemplateContext'
+import templateData from '../../../template.json'
 
 export default function Header (){
-    const {title, subTitle, iconSrc} = useContext(TemplateContext)
+    const { page } = useContext(TemplateContext)
+
+    const title = templateData[page].title
+    const subTitle = templateData[page].subTitle
+    const iconSrc = templateData[page].iconSrc
  
     function renderIcon(): any {
         return (
