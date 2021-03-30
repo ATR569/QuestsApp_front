@@ -1,0 +1,68 @@
+.container{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+}
+
+.card_container {
+    overflow: hidden;
+    margin: -10px;
+    width: 350px;
+}
+
+.header{
+    background-color: var(--light-yellow);
+    height: 3rem;
+    display: flex;
+    box-shadow: 0px 0px 8px var(--black50);
+    padding: 0px 20px;
+}
+
+.header_text{
+    display: flex;
+    flex: 1;
+    align-self: center;
+    font-size: 1.5rem; 
+    font-weight: bold;
+    color: var(--orange);
+}
+
+.container_img{
+    display: flex;
+    background: var(--white);
+    width: 25%;
+    height: 70%;
+    align-self: center;
+    justify-content: center;
+}
+
+.img{
+    width: 70%;
+    height: auto;
+}
+
+.input_password{
+    margin-top: 25px;
+}
+
+.content{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    margin: 15px 0px;
+    align-items: center;
+    justify-content: space-around;
+    
+}
+
+.buttons button{
+    font-size: 1rem;
+}
