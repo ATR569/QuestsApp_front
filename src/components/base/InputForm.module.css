@@ -5,8 +5,10 @@
     border-bottom: black solid 1px;
     outline: none;
     margin-bottom: 0.9rem;
+    padding: 5px 0px;
 }
 
 .label{
     color: var(--orange);
+    font-size: .9rem;
 }
