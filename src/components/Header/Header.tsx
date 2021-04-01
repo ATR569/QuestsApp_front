@@ -1,23 +1,24 @@
 import React, { useContext } from 'react'
 import styles from './Header.module.css'
-import {TemplateContext} from '../../contexts/TemplateContext'
+import { TemplateContext } from '../../contexts/TemplateContext'
 import templateData from '../../../template.json'
+import UserProfile from '../base/UserProfile'
 
-export default function Header (){
+export default function Header() {
     const { page } = useContext(TemplateContext)
 
     const title = templateData[page].title
     const subTitle = templateData[page].subTitle
     const iconSrc = templateData[page].iconSrc
- 
+
     function renderIcon(): any {
         return (
             <div className={styles.icon}>
-                <img src={iconSrc} alt="img"/>
+                <img src={iconSrc} alt="img" />
             </div>
         )
     }
-    
+
     function renderPageTitle(title: string): any {
         return (
             <div className={styles.pageTitle}>
@@ -38,7 +39,7 @@ export default function Header (){
     function renderUserProfile(): any {
         return (
             <div className={styles.userProfile}>
-
+                <UserProfile />
             </div>
         )
     }
@@ -49,7 +50,7 @@ export default function Header (){
                 {renderPageTitle(title)}
                 {renderUserProfile()}
             </div>
-                {renderSubtitle(subTitle)}
+            {renderSubtitle(subTitle)}
         </div>
     )
 }
