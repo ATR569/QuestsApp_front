@@ -1,3 +1,9 @@
+.app {
+	display: flex;
+	background-image: url('/background.wide.jpg');
+	background-attachment: fixed;
+}
+
 .appTemplate {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -5,15 +11,13 @@
 	min-height: 100vh;
 	display: grid;
 	padding: 15px;
+	width: 100%;
 
 	grid-template-rows: 120px 1fr;
 	grid-template-columns: 275px 1fr;
 	grid-template-areas:
 			"menu header"
 			"menu content";
-
-	background-image: url('/background.wide.jpg');
-	background-attachment: fixed;
 }
 
 .content {
