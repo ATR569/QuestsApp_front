@@ -62,10 +62,6 @@
     color: var(--light-yellow);
 }
 
-.nav_text a li:focus {
-    background-color: var(--brown-selected);
-}
-
 .nav_text:focus-within {
     background-color: var(--dark-brown-selected);
 }
