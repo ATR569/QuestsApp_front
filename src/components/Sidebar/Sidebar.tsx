@@ -10,10 +10,10 @@ function Sidebar() {
                 <img src="/QuestsApp-logo.svg" alt="Logo QuestsApp" />
             </div>
             <ul className={styles.nav_menu_items}>
-                {Object.values(templateData).map((item, index) => {
+                {Object.values(templateData).map((item) => {
                     return (
-                        <a href={item.path} className={styles.nav_text} >
-                            <li key={index} >
+                        <a href={item.path} className={styles.nav_text} key={item.id}>
+                            <li key={item.id} >
                                 <img src={item.iconSrc} alt="icone" />
                                 {item.title}
                             </li>
