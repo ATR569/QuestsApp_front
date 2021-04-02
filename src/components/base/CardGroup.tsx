@@ -1,4 +1,3 @@
-import { group } from 'node:console'
 import React, { Component } from 'react'
 import Group from '../../model/Group'
 
