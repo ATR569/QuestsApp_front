@@ -11,11 +11,12 @@
     transition: transform 0.3 ease;
     outline: none;
     padding: 5px 10px;
-    border: 1px solid #00000005
+    border: 1px solid #00000005;
+    box-shadow: 0px 0px 8px #0005;
 }
 
 .btn:hover{
-    box-shadow: 0px 0px 8px var(--black50);
+    box-shadow: 0px 0px 8px #000A;
 } 
 
 .btn:active{

@@ -1,25 +1,21 @@
 import { createContext, useState, ReactNode } from 'react'
 
-export interface Template {
-    page: string
-}
-
-interface TemplateContextData {
+interface ITemplateContextData {
     page: string
     setPage: (page) => void
 }
 
-interface TemplateProviderProps {
+interface ITemplateProviderProps {
     children: ReactNode
     page?: string
 }
 
-export const TemplateContext = createContext({} as TemplateContextData)
+export const TemplateContext = createContext({} as ITemplateContextData)
 
 export function TemplateProvider({
     children,
     ...rest
-}: TemplateProviderProps) {
+}: ITemplateProviderProps) {
 
     const [page, setPage] = useState(rest.page ?? 'inicio')
 

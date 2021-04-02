@@ -1,29 +1,34 @@
 {
     "inicio": {
+        "id": 1,
         "title": "Início",
         "subTitle": "Início",
         "path": "/",
         "iconSrc": "/icons/botao-home.svg"
     },
     "grupos": {
+        "id": 2,
         "title": "Meus Grupos de Estudos",
         "subTitle": "Meus Grupos de Estudos",
         "path": "/grupos_estudos",
         "iconSrc": "/icons/group.svg"
     },
     "questionarios": {
+        "id": 3,
         "title": "Meus Questionários",
         "subTitle": "Meus Questionários",
         "path": "/questionarios",
         "iconSrc": "/icons/questionario.svg"
     },
     "perfil": {
+        "id": 4,
         "title": "Dados Cadastrais",
         "subTitle": "Dados Cadastrais",
         "path": "/dados_cadastrais",
         "iconSrc": "/icons/users.svg"
     },
     "ajuda": {
+        "id": 5,
         "title": "Ajuda",
         "subTitle": "Ajuda",
         "path": "/ajuda",
