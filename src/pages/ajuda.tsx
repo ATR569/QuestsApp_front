@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import CardContainer from '../components/base/CardContainer'
 import styles from '../styles/pages/ajuda.module.css'
 import { TemplateContext } from '../contexts/TemplateContext'
@@ -8,8 +8,11 @@ import 'antd/dist/antd.css';
 const { Panel } = Collapse;
 
 export default function Ajuda() {
-    const { setPage } = useContext(TemplateContext)
-    setPage('ajuda')
+    const { changePage } = useContext(TemplateContext)
+
+    useEffect(() => {
+        changePage('ajuda')
+    }, [])
 
     var question1 = "Como criar um novo grupo?";
     var answer1 = "Ao acessar o menu lateral, selecione a opção meus grupos, na página “meus grupos” você irá encontrar na parte superior o botão adicionar grupo. Ao clicar no botão você será direcionado para tela de onde será preenchido as informações do novo grupo."
@@ -20,7 +23,7 @@ export default function Ajuda() {
                 <CardContainer >
                     <div >
                         <div className={styles.titleHolder}>
-                            <h2>Dúvidas Frequentes do QuestsApp</h2>
+                            <h2>Dúvidas Frequentes</h2>
                         </div>
                         <Collapse defaultActiveKey={['0']}>
                             <Panel header={question1} key="1">

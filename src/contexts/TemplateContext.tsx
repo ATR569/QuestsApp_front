@@ -2,7 +2,7 @@ import { createContext, useState, ReactNode } from 'react'
 
 interface ITemplateContextData {
     page: string
-    setPage: (page) => void
+    changePage: (page) => void
 }
 
 interface ITemplateProviderProps {
@@ -16,14 +16,17 @@ export function TemplateProvider({
     children,
     ...rest
 }: ITemplateProviderProps) {
-
     const [page, setPage] = useState(rest.page ?? 'inicio')
+    
+    function changePage(page: string): void {
+        setPage(page)
+    }
 
     return (
         <TemplateContext.Provider
             value={{
                 page,
-                setPage,
+                changePage,
             }}>
             {children}
         </TemplateContext.Provider>

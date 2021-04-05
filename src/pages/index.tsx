@@ -34,8 +34,8 @@ const cardDescriptions: Array<CardDescription> = [
 ]
 
 export default function Home() {
-    const { setPage } = useContext(TemplateContext)
-    setPage('inicio')
+    const { changePage } = useContext(TemplateContext)
+    changePage('inicio')
 
     function renderDescription(description: string) {
         return (
