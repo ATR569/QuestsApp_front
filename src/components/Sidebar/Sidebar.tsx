@@ -13,11 +13,11 @@ function Sidebar() {
                 <img src="/QuestsApp-logo.svg" alt="Logo QuestsApp" />
             </div>
             <ul className={styles.nav_menu_items}>
-                {Object.values(templateData).map((item, index) => {
+                {Object.values(templateData).map((item) => {
                     return (
-                        <div className={router.asPath === item.path ? styles.selected : styles.not_selected}>
-                            <a href={item.path} className={styles.nav_text} >
-                                <li key={index}>
+                        <div key={item.id} className={router.asPath === item.path ? styles.selected : styles.not_selected}>
+                            <a href={item.path} key={item.id} className={styles.nav_text} >
+                                <li key={item.id}>
                                     <img src={item.iconSrc} alt="icone" />
                                     {item.title}
                                 </li>
