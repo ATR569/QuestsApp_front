@@ -1,6 +1,7 @@
 .container {
+    height: 100%;
+    width: 100%;
     display: flex;
-    flex-direction: row;
     justify-content: flex-end;
 }
 
@@ -15,17 +16,17 @@
 .text {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    margin-top: 10px;
-    margin-left: 2px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    justify-content: center;
+    margin-left: 5px;
 }
 
-.text h3 {
+.userName {
+    font-size: 18px;
+    font-weight: bold;
     color: var(--orange);
 }
 
-.text h6 {
-    color: var(--dark-gray-text);
+.userInstitution {
+    font-size: 14px;
+    color: var(--light-gray-text);
 }

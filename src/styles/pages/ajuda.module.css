@@ -2,11 +2,11 @@
 .ajuda{
     padding: 10px;
     overflow-y: auto;
+    max-width: 100%;
 }
 
 .question {
     color: var(--dark-gray-text);
-    width: 1500px;
 }
 
 .cardContent {

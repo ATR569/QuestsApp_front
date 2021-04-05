@@ -16,9 +16,8 @@ export default function Ajuda() {
     function renderQuestions() {
         return (
 
-            <div>
+            <div className={styles.ajuda}>
                 <CardContainer >
-
                     <div >
                         <div className={styles.titleHolder}>
                             <h2>Dúvidas Frequentes do QuestsApp</h2>
