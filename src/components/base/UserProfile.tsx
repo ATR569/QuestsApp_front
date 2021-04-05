@@ -11,8 +11,8 @@ function UserProfile() {
             <div className={styles.text}>
                 {/* <h3>{name}</h3>
                 <h6>{institution}</h6> */}
-                <h3>Fulano de Tal</h3>
-                <h6>UEPB</h6>
+                <div className={styles.userName}>Fulano de Tal</div>
+                <div className={styles.userInstitution}>UEPB</div>
             </div>
         </div>
     )
