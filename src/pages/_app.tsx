@@ -6,14 +6,18 @@ import { TemplateProvider } from '../contexts/TemplateContext'
 import { SignProvider, Mode } from '../contexts/SignContext'
 import '../styles/global.css'
 import styles from '../styles/pages/app.module.css'
-import  {AuthService}  from '../services/auth'
+import { AuthService } from '../services/auth'
+import { useRouter } from 'next/router'
+
+let auth: Boolean = true
 
 function MyApp({ Component, pageProps }) {
-    const [isAuthenticated, setAuthenticated] = useState(false as Boolean)
+    const router = useRouter()
+    const [isAuthenticated, setAuthenticated] = useState(auth)
 
     useEffect(() => {
         setAuthenticated(AuthService.isAuthenticated())
-    }, [isAuthenticated])
+    }, [])
 
     function renderAppTemplate() {
         return (
@@ -39,10 +43,13 @@ function MyApp({ Component, pageProps }) {
         )
     }
 
-    return (
+    return isAuthenticated ? (
         <div className={styles.app}>
-            { isAuthenticated ? renderAppTemplate() : renderSign()}
-            {/* { renderSign() } */}
+            { renderAppTemplate() }
+        </div>
+    ) : (
+        <div className={styles.app}>
+            { renderSign() }
         </div>
     )
 }

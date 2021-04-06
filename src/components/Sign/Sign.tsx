@@ -6,9 +6,13 @@ import CadastroUsuario from '../CadastroUsuario/CadastroUsuario'
 export default function SignPage() {
     const { mode } = useContext(SignContext)
 
-    return (
+    return mode === Mode.LOGIN ? (
         <div>
-            {mode === Mode.LOGIN ? <Login /> : <CadastroUsuario />}
+            {<Login />}
+        </div>
+    ) : (
+        <div>
+            <CadastroUsuario />
         </div>
     )
 }

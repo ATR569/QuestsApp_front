@@ -3,7 +3,6 @@ import CardContainer from '../components/base/CardContainer'
 import styles from '../styles/pages/ajuda.module.css'
 import { TemplateContext } from '../contexts/TemplateContext'
 import { Collapse } from 'antd';
-import 'antd/dist/antd.css';
 
 const { Panel } = Collapse;
 
