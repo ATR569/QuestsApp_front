@@ -1,30 +1,65 @@
-import React, { Component} from 'react'
+import React, { Component } from 'react'
 import styles from './RoundedButton.module.css'
 
-interface myProps {
-    label: string
-    imageSrc?: string
-    color: string
-    width?: string
-    onClick?: any
+export enum ButtonKind {
+    ConfirmButton,
+    CancelButton
 }
 
-export default class RoundedButton extends Component<myProps, {}> {
-    
+interface IButtonProps {
+    label: string
+    imageSrc?: string
+    color?: string
+    width?: string
+    height?: string
+    onClick?: any
+    outlined?: boolean,
+    buttonKind?: ButtonKind
+}
+
+export default class RoundedButton extends Component<IButtonProps, {}> {
+
+    private getBtnKindStyles(buttonKind: ButtonKind | undefined): object {
+        switch (buttonKind) {
+            case ButtonKind.CancelButton:
+                return {
+                    backgroundColor: 'white',
+                    height: '30px',
+                    width: this.props.width,
+                    border: '2px solid var(--orange)',
+                    color: 'var(--orange)',
+                }
+            case ButtonKind.ConfirmButton:
+                return {
+                    backgroundColor: 'var(--orange)',
+                    height: '30px',
+                    width: this.props.width,
+                    border: 'none',
+                    color: 'white',
+                }
+            default:
+                return {
+                    backgroundColor: this.props.outlined ? '#FFF' : this.props.color || '#FFF',
+                    width: this.props.width,
+                    height: this.props.height,
+                    border: this.props.outlined ? `2px solid ${this.props.color}` : 'none',
+                    color: this.props.outlined ? this.props.color : 'black',
+                }
+        }
+
+    }
+
     private renderIcon(): any {
         const icon = this.props.imageSrc
-        return icon ? <div className={styles.icon}> <img src={icon} alt="Icone"/> </div> : <React.Fragment />
+        return icon ? <div className={styles.icon}> <img src={icon} alt="Icone" /> </div> : <React.Fragment />
     }
 
     private renderLabel(): any {
-        return <div className={styles.label}>{ this.props.label }</div>
+        return <div className={styles.label}>{this.props.label}</div>
     }
 
     render(): any {
-        const btnStyles = {
-            backgroundColor: this.props.color,
-            width: this.props.width
-        }
+        const btnStyles = this.getBtnKindStyles(this.props.buttonKind)
 
         return (
             <div className={styles.btnContainer}>
@@ -32,7 +67,7 @@ export default class RoundedButton extends Component<myProps, {}> {
                     {this.renderIcon()}
                     {this.renderLabel()}
                 </button>
-            </div>  
-        )   
+            </div>
+        )
     }
 }
