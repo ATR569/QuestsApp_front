@@ -34,4 +34,8 @@ export default class Group {
     public getQuestionnairesCount(): Number {
         return this._questionnaires.length
     }
+
+    public getQuestionsFromQuestionnairesCount(): Number {
+        return Math.floor(Math.random() * (100 - 1) + 1)
+    }
 }

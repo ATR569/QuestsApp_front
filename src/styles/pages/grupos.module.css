@@ -1,0 +1,11 @@
+.barra_topo{
+    border-bottom: 3px solid black;
+    border-image: linear-gradient(to right, #00000000,  #00000030, #00000000) 1;
+    margin: 20px;
+}
+
+.grupos{
+    margin-left: 30px;
+    display: flex;
+    flex-wrap: wrap;
+}
