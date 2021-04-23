@@ -27,7 +27,7 @@ export default class CardGroup extends Component<IGroupProps, {}> {
                 <div className={styles.informations}>
                     <span>{`${group.getMembersCount()} Membros`}</span>
                     <span>{`${group.getQuestionnairesCount()} Questionários`}</span>
-                    <span>57 Questões</span>
+                    <span>{`${group.getQuestionsFromQuestionnairesCount()} Questões`}</span>
                 </div>
 
                 <div className={styles.effect} />

@@ -1,7 +1,6 @@
 .filter{
     display: flex;
-    margin: 20px;
-    border: 1px solid var(--light-orange);
+    border: 1px solid var(--orange);
     border-radius: 30px;
     height: 30px;
     width: 250px;

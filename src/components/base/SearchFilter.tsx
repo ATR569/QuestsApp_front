@@ -8,7 +8,7 @@ export default function SearchFilter() {
             <div className={styles.container_icon}>
                 <img className={styles.icon} src="icons/lupa.svg" />
             </div>
-            <input className={styles.ipt} type="text" />
+            <input className={styles.ipt} type="text" placeholder="Filtrar" />
         </div>
     )
 }
