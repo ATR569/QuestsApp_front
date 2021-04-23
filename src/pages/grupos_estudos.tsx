@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CardGroup from '../components/base/CardGroup'
 import CardContainer from '../components/base/CardContainer'
+import CadastroGrupo from '../components/CadastroGrupo/CadastroGrupo'
 import SearchFilter from '../components/base/SearchFilter'
 import RoundedButton, { ButtonKind } from '../components/base/RoundedButton'
 import styles from '../styles/pages/grupos.module.css'
@@ -9,6 +10,7 @@ import Group from '../model/Group'
 
 export default function Grupo() {
     const { changePage } = useContext(TemplateContext)
+    const [visible, setVisible] = useState(false)
 
     useEffect(() => {
         changePage('grupos')
@@ -27,10 +29,12 @@ export default function Grupo() {
     function renderGroups() {
         return (
             <div>
+                <CadastroGrupo visible={visible} setVisible={setVisible}/>
+
                 <CardContainer>
                     <div className={styles.barra_topo}>
                         <SearchFilter />
-                        <RoundedButton label="Adicionar Grupo" buttonKind={ButtonKind.ConfirmButton} />
+                        <RoundedButton label="Adicionar Grupo" buttonKind={ButtonKind.ConfirmButton} onClick={() => setVisible(true)}/>
                     </div>
                     <div className={styles.grupos}>
                         <CardGroup group={gerarGrupo()} />

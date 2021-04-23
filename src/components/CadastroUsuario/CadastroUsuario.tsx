@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import CardContainer from '../base/CardContainer'
 import InputForm from '../base/InputForm'
-import RoundedButton from '../base/RoundedButton'
+import RoundedButton, { ButtonKind } from '../base/RoundedButton'
 import styles from './CadastroUsuario.module.css'
 import { SignContext } from '../../contexts/SignContext'
 
@@ -22,19 +22,19 @@ export default function CadastroUsuario() {
     function renderButtons(): any {
         return (
             <div className={styles.buttons}>
-                <div className={styles.btn_save}>
-                    <RoundedButton
-                        label='Salvar'
-                        color='var(--light-yellow)'
-                        width='140px'
-                        onClick={save} />
-                </div>
                 <div className={styles.bt_cancel}>
                     <RoundedButton
                         label='Cancelar'
-                        color='var(--orange)'
                         width='140px'
+                        buttonKind={ButtonKind.CancelButton}
                         onClick={cancel} />
+                </div>
+                <div className={styles.btn_save}>
+                    <RoundedButton
+                        label='Salvar'
+                        width='140px'
+                        buttonKind={ButtonKind.ConfirmButton}
+                        onClick={save} />
                 </div>
             </div>
         )

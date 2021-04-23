@@ -1,0 +1,20 @@
+
+.content {
+    background-color: white;
+}
+
+.title {
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: var(--dark-gray-text)
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ant-modal-content {
+    border-radius: 15px;
+    background-color: red;
+}

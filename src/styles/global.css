@@ -32,3 +32,14 @@
         font-size: 87.5%;
     }
 }
+
+.ant-modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.ant-modal div {
+    border: none;
+}
