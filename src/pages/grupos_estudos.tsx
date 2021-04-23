@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import CardGroup from '../components/base/CardGroup'
 import CardContainer from '../components/base/CardContainer'
 import SearchFilter from '../components/base/SearchFilter'
+import RoundedButton, { ButtonKind } from '../components/base/RoundedButton'
 import styles from '../styles/pages/grupos.module.css'
 import { TemplateContext } from '../contexts/TemplateContext'
 import Group from '../model/Group'
@@ -29,8 +30,11 @@ export default function Grupo() {
                 <CardContainer>
                     <div className={styles.barra_topo}>
                         <SearchFilter />
+                        <RoundedButton label="Adicionar Grupo" buttonKind={ButtonKind.ConfirmButton} />
                     </div>
                     <div className={styles.grupos}>
+                        <CardGroup group={gerarGrupo()} />
+                        <CardGroup group={gerarGrupo()} />
                         <CardGroup group={gerarGrupo()} />
                         <CardGroup group={gerarGrupo()} />
                         <CardGroup group={gerarGrupo()} />
