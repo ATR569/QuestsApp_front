@@ -1,7 +1,12 @@
 export default class Group {
+    private _id: string
     private _descricao: string
     private _members: Array<Number>
     private _questionnaires: Array<Number>
+
+    public get id(): string {
+        return this._id
+    }
 
     public get descricao(): string {
         return this._descricao
@@ -13,6 +18,10 @@ export default class Group {
 
     public get questionnaires(): Array<Number> {
         return this._questionnaires
+    }
+
+    public set id(id: string) {
+        this._id = id;
     }
 
     public set descricao(descricao: string) {
