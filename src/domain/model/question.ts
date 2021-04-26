@@ -42,16 +42,22 @@ export class Question extends Entity implements IJSONTransformable<Question> {
     }
 
     public fromJSON(json: any): Question {
+        if (json === undefined) {
+            json = {}
+        }
+
         if (json.id !== undefined) this.id = json.id
         if (json.description !== undefined) this.description = json.description
-        if (json.creator !== undefined) this.creator = json.creator
-        if (json.answers !== undefined) this.answers = json.answers
+        if (json.creator !== undefined) this.creator = new User().fromJSON(json.creator)
+        if (json.answers !== undefined && json.answers instanceof Array) {
+            this.answers = json.answers.map((answer: any) => new Answer().fromJSON(answer))
+        }
 
         return this
     }
 
     public getAnswerCount(): number {
-        return this._answers.length
+        return this.answers ? this.answers.length : 0
     }
 
 }

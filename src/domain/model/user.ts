@@ -1,5 +1,5 @@
 import { Entity } from './entity'
-import { IJSONTransformable } from './json.transformer.interface';
+import { IJSONTransformable } from './json.transformer.interface'
 
 export class User extends Entity implements IJSONTransformable<User> {
     private _name?: string
@@ -49,6 +49,10 @@ export class User extends Entity implements IJSONTransformable<User> {
     }
 
     public fromJSON(json: any): User {
+        if (json === undefined) {
+            json = {}
+        }
+        
         if (json.id !== undefined) this.id = json.id
         if (json.name !== undefined) this.name = json.name
         if (json.email !== undefined) this.email = json.email

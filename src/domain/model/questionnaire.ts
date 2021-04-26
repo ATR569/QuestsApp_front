@@ -31,14 +31,19 @@ export class Questionnaire extends Entity implements IJSONTransformable<Question
     }
 
     public fromJSON(json: any): Questionnaire {
-        if (json.id) this.id = json.id
-        if (json.discipline) this.discipline = json.discipline
-        if (json.questions) this.questions = json.questions
+        if (json === undefined) {
+            json = {}
+        }
+        if (json.id !== undefined) this.id = json.id
+        if (json.discipline !== undefined) this.discipline = json.discipline
+        if (json.questions !== undefined && json.questions instanceof Array) {
+            this.questions = json.questions.map((question: any) => new Question().fromJSON(question))
+        }
 
         return this
     }
 
     public getQuestionsCount(): number {
-        return this._questions.length
+        return this.questions ? this.questions.length : 0
     }
 }

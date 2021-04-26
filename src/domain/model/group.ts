@@ -52,24 +52,34 @@ export class Group extends Entity implements IJSONTransformable<Group> {
     }
 
     public fromJSON(json: any): Group {
+        if (json === undefined) {
+            json = {}
+        }
+        
         if (json.id !== undefined) this.id = json.id
         if (json.name !== undefined) this.name = json.name
-        if (json.administrator !== undefined) this.administrator = json.administrator
-        if (json.members !== undefined) this.members = json.members
-        if (json.questionnaires !== undefined) this.questionnaires = json.questionnaires
+        if (json.administrator !== undefined) this.administrator = new User().fromJSON(json.administrator)
+        if (json.members !== undefined && json.members instanceof Array) {
+            this.members = json.members.map((member: any) => new User().fromJSON(member))
+        }
+        if (json.questionnaires !== undefined && json.questionnaires instanceof Array) {
+            this.questionnaires = json.questionnaires.map((questionnaire: any) => new User().fromJSON(questionnaire))
+        }
 
         return this
     }
 
     public getMembersCount(): number {
-        return this._members.length
+        return this.members ? this.members.length : 0
     }
 
     public getQuestionnairesCount(): number {
-        return this._questionnaires.length
+        return this.questionnaires ? this.questionnaires.length : 0
     }
 
     public getQuestionsFromQuestionnairesCount(): number {
-        return Math.floor(Math.random() * (100 - 1) + 1)
+        if (!this.questionnaires) return 0
+
+        return this.questionnaires.reduce((acc, quest) => acc += quest.getQuestionsCount(), 0)
     }
 }
