@@ -8,45 +8,36 @@ import styles from '../styles/pages/grupos.module.css'
 import { TemplateContext } from '../contexts/TemplateContext'
 import Group from '../model/Group'
 import Link from 'next/link'
+import { api } from '../services/api'
+import { openErrorNotification } from '../utils/notification'
+
+const URI = 'groups'
 
 export default function Grupo() {
+
     const { changePage } = useContext(TemplateContext)
     const [visible, setVisible] = useState(false)
+    const [groups, setGroups] = useState([])
 
     useEffect(() => {
         changePage('grupos')
+        getGroups()
     }, [])
 
-
-    function gerarGrupo(): Group {
-        const group: Group = new Group()
-
-        group.id = '507f1f77bcf86cd799439011'
-        group.descricao = `Grupo 0${Math.floor(Math.random() * (10000 - 1) + 1)}`
-        group.members = new Array(Math.floor(Math.random() * (11 - 1) + 3))
-        group.questionnaires = new Array(Math.floor(Math.random() * (10 - 1) + 1))
-
-        return group
+    async function getGroups() {
+        await api.get(URI)
+            .then((res: any) => setGroups(res.data))
+            .catch((err: any) => openErrorNotification(err.response.data))
     }
 
-    function getGroups(): Array<Group> {
-        const grupos: Array<Group> = []
+    function mapGroups() {
+        const gruposMap: Array<Group> = []
 
-        grupos.push(gerarGrupo())
-        grupos.push(gerarGrupo())
-        grupos.push(gerarGrupo())
-        grupos.push(gerarGrupo())
-        grupos.push(gerarGrupo())
-        grupos.push(gerarGrupo())
-        grupos.push(gerarGrupo())
+        groups.forEach(group => gruposMap.push(new Group().fromJSON(group)))
 
-        return grupos
-    }
-
-    function mapGroups(grupos: Array<Group>) {
-        return grupos.map(group => {
+        return gruposMap.map((group, index) => {
             return (
-                <Link href={`/grupos_detalhes/${group.id}`}>
+                <Link href={`/grupos_detalhes/${group.id}`} key={index}>
                     <a className={styles.ancora}>
                         <CardGroup group={group} />
                     </a>
@@ -66,7 +57,7 @@ export default function Grupo() {
                         <RoundedButton label="Adicionar Grupo" buttonKind={ButtonKind.ConfirmButton} onClick={() => setVisible(true)} />
                     </div>
                     <div className={styles.grupos}>
-                        {mapGroups(getGroups())}
+                        {mapGroups()}
                     </div>
                 </CardContainer>
             </div>

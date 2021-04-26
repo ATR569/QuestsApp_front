@@ -36,6 +36,15 @@ export default class Group {
         this._questionnaires = questionnaires;
     }
 
+    public fromJSON(json: any): Group {
+        if (json.id !== undefined) this.id = json.id
+        if (json.descricao !== undefined) this.descricao = json.descricao
+        if (json.members !== undefined) this.members = json.members
+        if (json.questionnaires !== undefined) this.questionnaires = json.questionnaires
+
+        return this
+    }
+
     public getMembersCount(): Number {
         return this._members.length
     }
