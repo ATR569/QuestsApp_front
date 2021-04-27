@@ -4,9 +4,17 @@ import CardContainer from '../../components/base/CardContainer'
 import styles from '../../styles/pages/grupo_detalhes.module.css'
 import RoundedButton from '../../components/base/RoundedButton'
 import { api } from '../../services/api'
+import { Group } from '../../domain/model/group'
 const { Panel } = Collapse
 
-const GroupDetails = ({ group }) => {
+interface IGroupProps {
+    group: Group
+}
+
+const GroupDetails = ({ group }: IGroupProps) => {
+
+    // console.log('Group: ', group)
+    const grupo = new Group().fromJSON(group)
 
     function renderButton(label: string, buttonLabel: string) {
         return (
@@ -28,14 +36,14 @@ const GroupDetails = ({ group }) => {
     return (
         <div>
             <CardContainer >
-                <h1 className={styles.titleHolder}>{group.name}</h1>
+                <h1 className={styles.titleHolder}>{grupo.name}</h1>
                 <div>
                     <Collapse defaultActiveKey={['0']}>
 
                         <Panel header={renderButton('Membros', 'Adicionar Membro')} key="1" style={{ background: "#DCDCDC" }} >
                             <div className={styles.containerPanel}>
                                 <ul>
-                                    {group.members.map(member => {
+                                    {grupo.members.map(member => {
                                         return (
                                             <li key={member.id}>
                                                 <div className={styles.spans}>
@@ -55,12 +63,12 @@ const GroupDetails = ({ group }) => {
                         <Panel header={renderButton('Questionários', 'Adicionar Questionários')} key="2" style={{ background: "#DCDCDC" }}>
                             <div className={styles.containerPanel}>
                                 <ul>
-                                    {group.questionnaires.map(questionnair => {
+                                    {grupo.questionnaires.map(questionnair => {
                                         return (
                                             <li key={questionnair.id}>
                                                 <div className={styles.spans}>
                                                     <span>{questionnair.discipline}</span>
-                                                    <span>Quantidade de questões: 12</span>
+                                                    <span>{`Número de Questões: ${questionnair.getQuestionsCount()}`}</span>
                                                 </div>
                                                 <button type="button">
                                                     <img src="/icons/lixeira.svg" alt="Icone de deletar" />
