@@ -1,29 +1,12 @@
 import { Collapse } from 'antd'
 import React from 'react'
 import CardContainer from '../../components/base/CardContainer'
-
 import styles from '../../styles/pages/grupo_detalhes.module.css'
-
-import { useRouter } from 'next/router'
-
-import data from '../../services/teste.json'
 import RoundedButton from '../../components/base/RoundedButton'
+import { api } from '../../services/api'
+const { Panel } = Collapse
 
-const { Panel } = Collapse;
-
-
-function grupos_detalhes() {
-
-    const router = useRouter()
-    const { id } = router.query
-
-    console.log("ID: ", id)
-
-    const grupo = {
-        descricao: 'Grupo de Estudos ATRJ',
-        members: [''],
-        questionarios: ['']
-    }
+const GroupDetails = ({ group }) => {
 
     function renderButton(label: string, buttonLabel: string) {
         return (
@@ -45,18 +28,18 @@ function grupos_detalhes() {
     return (
         <div>
             <CardContainer >
-                <h1 className={styles.titleHolder}>{grupo.descricao}</h1>
+                <h1 className={styles.titleHolder}>{group.name}</h1>
                 <div>
                     <Collapse defaultActiveKey={['0']}>
 
                         <Panel header={renderButton('Membros', 'Adicionar Membro')} key="1" style={{ background: "#DCDCDC" }} >
-                            <div className={styles.members}>
+                            <div className={styles.containerPanel}>
                                 <ul>
-                                    {data.grupos.map(grupo => grupo.members.map(member => {
+                                    {group.members.map(member => {
                                         return (
-                                            <li key={grupo.id}>
+                                            <li key={member.id}>
                                                 <div className={styles.spans}>
-                                                    <span>{member.nome}</span>
+                                                    <span>{member.name}</span>
                                                     <span>{member.email}</span>
                                                 </div>
                                                 <button type="button">
@@ -64,13 +47,29 @@ function grupos_detalhes() {
                                                 </button>
                                             </li>
                                         )
-                                    }))}
+                                    })}
                                 </ul>
                             </div>
                         </Panel>
 
                         <Panel header={renderButton('Questionários', 'Adicionar Questionários')} key="2" style={{ background: "#DCDCDC" }}>
-
+                            <div className={styles.containerPanel}>
+                                <ul>
+                                    {group.questionnaires.map(questionnair => {
+                                        return (
+                                            <li key={questionnair.id}>
+                                                <div className={styles.spans}>
+                                                    <span>{questionnair.discipline}</span>
+                                                    <span>Quantidade de questões: 12</span>
+                                                </div>
+                                                <button type="button">
+                                                    <img src="/icons/lixeira.svg" alt="Icone de deletar" />
+                                                </button>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                            </div>
                         </Panel>
                     </Collapse>
                 </div>
@@ -79,4 +78,15 @@ function grupos_detalhes() {
     )
 }
 
-export default grupos_detalhes
+export default GroupDetails
+
+export async function getServerSideProps(ctx) {
+    const { id } = ctx.query
+    const { data } = await api.get(`groups/${id}`)
+
+    return {
+        props: {
+            group: data
+        }
+    }
+}

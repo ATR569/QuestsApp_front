@@ -5,13 +5,13 @@
     margin: 0 0 20px;
 }
 
-.members {
+.containerPanel {
     display: flex;
     flex-direction: column;
     text-decoration: none;
 }
 
-.members ul {
+.containerPanel ul {
     list-style: none;
     display: grid;
     grid-template-columns: 1fr;
@@ -19,7 +19,7 @@
     padding-bottom: 10px;
 }
 
-.members li {
+.containerPanel li {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -36,7 +36,7 @@
     color: var(--dark-gray-text);
 }
 
-.members li button {
+.containerPanel li button {
     float: right;
     border: none;
     border-radius: 25px;
