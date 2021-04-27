@@ -42,13 +42,16 @@
 }
 
 .title_group{
-    display: flex;
-    align-items: center;
+    height: 40px;
+    width: 100%;
     text-align: center;
     padding: 5px;
     font-size: 1.1rem;
     font-weight: bold;
     z-index: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .informations{

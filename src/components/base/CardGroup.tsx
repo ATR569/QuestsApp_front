@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Group from '../../model/Group'
+import { Group } from '../../domain/model/group'
 
 import styles from './CardGroup.module.css'
 
@@ -21,7 +21,7 @@ export default class CardGroup extends Component<IGroupProps, {}> {
                 </div>
 
                 <div className={styles.title_group}>
-                    <span>{group.descricao}</span>
+                    {group.name}
                 </div>
 
                 <div className={styles.informations}>

@@ -3,9 +3,9 @@ import { IJSONTransformable } from './json.transformer.interface'
 import { AnswerComment } from './answer.comment'
 
 export class Answer extends Entity implements IJSONTransformable<Answer> {
-    private _description: string
-    private _score: number
-    private _comments: Array<AnswerComment>
+    private _description?: string
+    private _score?: number
+    private _comments?: Array<AnswerComment>
 
     set description(description: string) {
         this._description = description
