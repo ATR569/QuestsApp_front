@@ -15,6 +15,7 @@ interface IButtonProps {
     onClick?: any
     outlined?: boolean,
     buttonKind?: ButtonKind
+    submit?: boolean
 }
 
 export default class RoundedButton extends Component<IButtonProps, {}> {
@@ -63,7 +64,12 @@ export default class RoundedButton extends Component<IButtonProps, {}> {
 
         return (
             <div className={styles.btnContainer}>
-                <button className={styles.btn} style={btnStyles} onClick={this.props.onClick}>
+                <button 
+                    className={styles.btn} 
+                    style={btnStyles} 
+                    onClick={this.props.onClick} 
+                    type={this.props.submit ? 'submit' : 'button'}>
+                        
                     {this.renderIcon()}
                     {this.renderLabel()}
                 </button>
