@@ -5,11 +5,11 @@ import { User } from './user'
 
 export class Group extends Entity implements IJSONTransformable<Group> {
     private _name?: string
-    private _administrator?: User 
-    private _members?: Array<User> 
-    private _questionnaires?: Array<Questionnaire> 
+    private _administrator?: User
+    private _members?: Array<User>
+    private _questionnaires?: Array<Questionnaire>
 
-    get name() : string | undefined{
+    get name(): string | undefined {
         return this._name
     }
 
@@ -17,7 +17,7 @@ export class Group extends Entity implements IJSONTransformable<Group> {
         this._name = name
     }
 
-    get administrator() : User | undefined{
+    get administrator(): User | undefined {
         return this._administrator
     }
 
@@ -25,7 +25,7 @@ export class Group extends Entity implements IJSONTransformable<Group> {
         this._administrator = administrator
     }
 
-    get members() : Array<User> | undefined{
+    get members(): Array<User> | undefined {
         return this._members
     }
 
@@ -33,14 +33,14 @@ export class Group extends Entity implements IJSONTransformable<Group> {
         this._members = members
     }
 
-    get questionnaires() : Array<Questionnaire> | undefined{
+    get questionnaires(): Array<Questionnaire> | undefined {
         return this._questionnaires
     }
 
     set questionnaires(questionnaires: Array<Questionnaire> | undefined) {
         this._questionnaires = questionnaires
     }
-    
+
     public toJSON(): object {
         return {
             id: this.id,
@@ -55,7 +55,7 @@ export class Group extends Entity implements IJSONTransformable<Group> {
         if (json === undefined) {
             json = {}
         }
-        
+
         if (json.id !== undefined) this.id = json.id
         if (json.name !== undefined) this.name = json.name
         if (json.administrator !== undefined) this.administrator = new User().fromJSON(json.administrator)
@@ -63,7 +63,7 @@ export class Group extends Entity implements IJSONTransformable<Group> {
             this.members = json.members.map((member: any) => new User().fromJSON(member))
         }
         if (json.questionnaires !== undefined && json.questionnaires instanceof Array) {
-            this.questionnaires = json.questionnaires.map((questionnaire: any) => new User().fromJSON(questionnaire))
+            this.questionnaires = json.questionnaires.map((questionnaire: any) => new Questionnaire().fromJSON(questionnaire))
         }
 
         return this
@@ -79,7 +79,6 @@ export class Group extends Entity implements IJSONTransformable<Group> {
 
     public getQuestionsFromQuestionnairesCount(): number {
         if (!this.questionnaires) return 0
-
         return this.questionnaires.reduce((acc, quest) => acc += quest.getQuestionsCount(), 0)
     }
 }
