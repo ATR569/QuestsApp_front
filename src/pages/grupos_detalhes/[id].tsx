@@ -50,7 +50,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                     <span>{member.name}</span>
                                                     <span>{member.email}</span>
                                                 </div>
-                                                <button type="button">
+                                                <button type="button" className={styles.buttons}>
                                                     <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                 </button>
                                             </li>
@@ -68,11 +68,16 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                             <li key={questionnair.id}>
                                                 <div className={styles.spans}>
                                                     <span>{questionnair.discipline}</span>
-                                                    <span>{`Número de Questões: ${questionnair.getQuestionsCount()}`}</span>
+                                                    <span>{`Número de Questões: ${questionnair.questionsCount}`}</span>
                                                 </div>
-                                                <button type="button">
-                                                    <img src="/icons/lixeira.svg" alt="Icone de deletar" />
-                                                </button>
+                                                <div className={styles.containerButton}>
+                                                    <button type="button" className={styles.buttons}>
+                                                        <img src="/icons/eye.svg" alt="Icone de deletar" style={{ width: "28px", height: "28px" }}/>
+                                                    </button>
+                                                    <button type="button" className={styles.buttons}>
+                                                        <img src="/icons/lixeira.svg" alt="Icone de deletar"/>
+                                                    </button>
+                                                </div>
                                             </li>
                                         )
                                     })}

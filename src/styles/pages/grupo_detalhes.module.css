@@ -36,15 +36,23 @@
     color: var(--dark-gray-text);
 }
 
-.containerPanel li button {
-    float: right;
+.buttons {
     border: none;
     border-radius: 25px;
 
     background: var(--orange);
 
-    width: 2rem;
-    height: 2rem;
+    width: 2.2rem;
+    height: 2.2rem;
+}
+
+.containerButton {
+    display: flex;
+    justify-content: space-between;
+}
+
+.containerButton button {
+    margin: 5px;
 }
 
 .utilsButtons {
