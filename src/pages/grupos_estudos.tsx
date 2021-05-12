@@ -26,14 +26,16 @@ export default function Grupo() {
 
     async function getGroups() {
         await api.get(URI)
-            .then((res: any) => setGroups(res.data))
+            .then((res: any) => {
+                setGroups(res.data)
+            })
             .catch((err: any) => openErrorNotification(err.response.data))
     }
 
     function mapGroups() {
         const gruposMap: Array<Group> = []
 
-        groups.forEach(group => gruposMap.push(new Group().fromJSON(group)))
+        groups.forEach((group: Group) => gruposMap.push(group))
 
         return gruposMap.map((group, index) => {
             return (
