@@ -6,8 +6,8 @@ import { User } from './user'
 export class Group extends Entity implements IJSONTransformable<Group> {
     private _name?: string
     private _administrator?: User
-    private _members?: Array<User>
-    private _questionnaires?: Array<Questionnaire>
+    private _membersCount?: number
+    private _questionnairesCount?: number
 
     get name(): string | undefined {
         return this._name
@@ -25,20 +25,20 @@ export class Group extends Entity implements IJSONTransformable<Group> {
         this._administrator = administrator
     }
 
-    get members(): Array<User> | undefined {
-        return this._members
+    get membersCount(): number | undefined {
+        return this._membersCount
     }
 
-    set members(members: Array<User> | undefined) {
-        this._members = members
+    set membersCount(membersCount: number | undefined) {
+        this._membersCount = membersCount
     }
 
-    get questionnaires(): Array<Questionnaire> | undefined {
-        return this._questionnaires
+    get questionnairesCount(): number | undefined {
+        return this._questionnairesCount
     }
 
-    set questionnaires(questionnaires: Array<Questionnaire> | undefined) {
-        this._questionnaires = questionnaires
+    set questionnairesCount(questionnairesCount: number | undefined) {
+        this._questionnairesCount = questionnairesCount
     }
 
     public toJSON(): object {
@@ -46,8 +46,8 @@ export class Group extends Entity implements IJSONTransformable<Group> {
             id: this.id,
             name: this.name,
             administrator: this.administrator,
-            members: this.members,
-            questionnaires: this.questionnaires
+            members: this.membersCount,
+            questionnaires: this.questionnairesCount
         }
     }
 
@@ -59,26 +59,8 @@ export class Group extends Entity implements IJSONTransformable<Group> {
         if (json.id !== undefined) this.id = json.id
         if (json.name !== undefined) this.name = json.name
         if (json.administrator !== undefined) this.administrator = new User().fromJSON(json.administrator)
-        if (json.members !== undefined && json.members instanceof Array) {
-            this.members = json.members.map((member: any) => new User().fromJSON(member))
-        }
-        if (json.questionnaires !== undefined && json.questionnaires instanceof Array) {
-            this.questionnaires = json.questionnaires.map((questionnaire: any) => new Questionnaire().fromJSON(questionnaire))
-        }
-
+        if (json.membersCount !== undefined) this.membersCount = json.membersCount
+        if (json.questionnairesCount !== undefined) this.questionnairesCount = json.questionnairesCount
         return this
-    }
-
-    public getMembersCount(): number {
-        return this.members ? this.members.length : 0
-    }
-
-    public getQuestionnairesCount(): number {
-        return this.questionnaires ? this.questionnaires.length : 0
-    }
-
-    public getQuestionsFromQuestionnairesCount(): number {
-        if (!this.questionnaires) return 0
-        return this.questionnaires.reduce((acc, quest) => acc += quest.getQuestionsCount(), 0)
     }
 }
