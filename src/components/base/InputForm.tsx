@@ -7,7 +7,7 @@ interface myPropos {
     type?: string,
     width?: string,
     value?: string,
-    handleChange?: (e) => void,
+    onChange?: (e) => void,
     onBlur?: any,
     name?: string
 }
@@ -26,7 +26,7 @@ class InputForm extends Component<myPropos, {}> {
                     style={{ width: widthInput }} 
                     type={typeInput} 
                     {...this.props}
-                    onChange={this.props.handleChange}/>
+                    onChange={this.props.onChange}/>
             </div>
         )
     }

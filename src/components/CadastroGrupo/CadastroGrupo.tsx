@@ -42,7 +42,7 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
                 <Form>
                     <InputForm
                         label="Nome do grupo de Estudo"
-                        handleChange={handleChange}
+                        onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.name}
                         name={'name'} />

@@ -49,7 +49,7 @@ const Login: React.FC = () => {
                         label="E-mail"
                         type="text"
                         width="220px"
-                        handleChange={handleChange}
+                        onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.email}
                         name={'email'} />
@@ -57,7 +57,7 @@ const Login: React.FC = () => {
                     <InputForm
                         label="Senha"
                         type="password"
-                        handleChange={handleChange}
+                        onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.password}
                         name={'password'} />
