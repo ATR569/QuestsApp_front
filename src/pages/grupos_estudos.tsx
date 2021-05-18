@@ -18,6 +18,7 @@ export default function Grupo() {
     const { changePage } = useContext(TemplateContext)
     const [visible, setVisible] = useState(false)
     const [groups, setGroups] = useState([])
+    const [groupsMapped, setGroupsMapped] = useState([])
 
     useEffect(() => {
         changePage('grupos')
@@ -28,16 +29,19 @@ export default function Grupo() {
         await api.get(URI)
             .then((res: any) => {
                 setGroups(res.data)
+                setGroupsMapped(mapGroups(res.data))
             })
             .catch((err: any) => openErrorNotification(err.response.data))
     }
 
-    function mapGroups() {
-        const gruposMap: Array<Group> = []
+    function filterGroups(e) {
+        const iptValue = e.target.value.toLowerCase()
+        const gruposFiltered = groups.filter(group => group.name.toLowerCase().startsWith(iptValue))
+        setGroupsMapped(mapGroups(gruposFiltered))
+    }
 
-        groups.forEach((group: Group) => gruposMap.push(group))
-
-        return gruposMap.map((group, index) => {
+    function mapGroups(groupsF: Array<Group>) {
+        return groupsF.map((group, index) => {
             return (
                 <Link href={`/grupos_detalhes/${group.id}`} key={index}>
                     <a className={styles.ancora}>
@@ -55,11 +59,11 @@ export default function Grupo() {
 
                 <CardContainer>
                     <div className={styles.barra_topo}>
-                        <SearchFilter />
+                        <SearchFilter onChange={filterGroups} />
                         <RoundedButton label="Adicionar Grupo" buttonKind={ButtonKind.ConfirmButton} onClick={() => setVisible(true)} />
                     </div>
                     <div className={styles.grupos}>
-                        {mapGroups()}
+                        {groupsMapped}
                     </div>
                 </CardContainer>
             </div>
