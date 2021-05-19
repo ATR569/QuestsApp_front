@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from './CadastroGrupo.module.css'
+import styles from '../../styles/modalCadastro.module.css'
 import RoundedButton, { ButtonKind } from '../base/RoundedButton'
 import InputForm from '../base/InputForm'
 import { Modal } from 'antd'
@@ -46,7 +46,7 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
                         onBlur={handleBlur}
                         value={values.name}
                         name={'name'} />
-
+                    {errors.name && touched.name && <div className={styles.feedback}>{errors.name}</div>}
                     <div className={styles.buttons}>
                         <RoundedButton
                             label="Cancelar"
@@ -82,9 +82,9 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
         validate: (values: ICadastroGrupoValues) => {
             let errors: FormikErrors<ICadastroGrupoValues> = {}
 
-            // if (!values.name) {
-            //     errors.name = 'Required'
-            // }
+            if (!values.name) {
+                errors.name = 'O nome do grupo é obrigatório!'
+            }
 
             return errors;
         }
