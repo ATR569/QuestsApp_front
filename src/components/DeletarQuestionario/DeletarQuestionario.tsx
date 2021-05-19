@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../styles/modalCadastro.module.css'
+import styles from './DeletarQuestionario.module.css'
 import RoundedButton, { ButtonKind } from '../base/RoundedButton'
 import { Modal } from 'antd'
 import { api } from '../../services/api'

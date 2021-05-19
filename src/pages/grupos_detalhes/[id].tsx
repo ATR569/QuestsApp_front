@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import CardContainer from '../../components/base/CardContainer'
 import CadastroQuestionario from '../../components/CadastroQuestionario/CadastroQuestionario'
 import DeletarQuestionario from '../../components/DeletarQuestionario/DeletarQuestionario'
+import ConvidarMembro from '../../components/ConvidarMembro/ConvidarMembro'
 import styles from '../../styles/pages/grupo_detalhes.module.css'
 import RoundedButton, { ButtonKind } from '../../components/base/RoundedButton'
 import { Modal } from 'antd'
@@ -17,7 +18,7 @@ interface IGroupProps {
 
 const GroupDetails = ({ group }: IGroupProps) => {
     const [visibleQuestionnaire, setVisibleQuestionnaire] = useState(false)
-    const [visibleMember, setVisibleMember] = useState(false)
+    const [visibleInvite, setVisibleInvite] = useState(false)
     const [visibleModalConfirm, setVisibleModalConfirm] = useState(false)
     const [groupId, setGroupId] = useState('')
     const [questionnaire, setQuestionnaire] = useState(new Questionnaire())
@@ -36,7 +37,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                     color="var(--orange)"
                     onClick={(event) => {
                         event.stopPropagation()
-                        label.includes('Membros') ? setVisibleMember(true) : setVisibleQuestionnaire(true)
+                        label.includes('Membros') ? setVisibleInvite(true) : setVisibleQuestionnaire(true)
                         setGroupId(group.id)
                     }}
                 />
@@ -53,7 +54,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
     return (
         <div>
             <CadastroQuestionario visible={visibleQuestionnaire} setVisible={setVisibleQuestionnaire} groupId={groupId} />
-            {/* <CadastroMembro visible={visibleMember} setVisible={setVisibleMember} /> */}
+            <ConvidarMembro visible={visibleInvite} setVisible={setVisibleInvite} groupId={groupId} />
             <DeletarQuestionario visible={visibleModalConfirm} setVisible={setVisibleModalConfirm} questionnaire={questionnaire} />
 
             <CardContainer >
@@ -61,7 +62,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                 <div>
                     <Collapse defaultActiveKey={['0']}>
 
-                        <Panel header={renderButton('Membros', 'Adicionar Membro')} key="1" style={{ background: "#DCDCDC" }} >
+                        <Panel header={renderButton('Membros', 'Convidar Membro')} key="1" style={{ background: "#DCDCDC" }} >
                             <div className={styles.containerPanel}>
                                 <ul>
                                     {grupo.members.map(member => {

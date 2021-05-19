@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../styles/modalCadastro.module.css'
+import styles from './CadastroQuestionario.module.css'
 import RoundedButton, { ButtonKind } from '../base/RoundedButton'
 import InputForm from '../base/InputForm'
 import { Modal } from 'antd'

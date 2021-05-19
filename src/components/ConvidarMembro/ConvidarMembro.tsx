@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import styles from './CadastroGrupo.module.css'
+import React from 'react'
+import styles from './ConvidarMembro.module.css'
 import RoundedButton, { ButtonKind } from '../base/RoundedButton'
 import InputForm from '../base/InputForm'
 import { Modal } from 'antd'
@@ -7,22 +7,24 @@ import { Form, withFormik, FormikErrors } from 'formik'
 import { api } from '../../services/api'
 import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
 
-const URI = 'groups'
+const URI = 'invites'
 
-interface ICadastroGrupoProps {
+interface IConvidarMembroProps {
     visible: boolean
     setVisible: (value: boolean) => void
+    groupId: string
 }
 
-interface ICadastroGrupoValues {
-    name: string
+interface IConvidarMembroValues {
+    email: string
 }
 
 interface IFormProps {
-    name?: string
+    email?: string
 }
 
-const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) => {
+const ConvidarMembro: React.FC<IConvidarMembroProps> = ({ visible, setVisible, groupId }) => {
+
     const handleCancelar = (event: Event) => {
         event.preventDefault()
         setVisible(false)
@@ -41,12 +43,13 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
             <div className={styles.form}>
                 <Form>
                     <InputForm
-                        label="Nome do grupo de Estudo"
+                        label="Email do convidado"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.name}
-                        name={'name'} />
-                    {errors.name && touched.name && <div className={styles.feedback}>{errors.name}</div>}
+                        value={values.discipline}
+                        name={'email'}
+                    />
+                    {errors.email && touched.email && <div className={styles.feedback}>{errors.email}</div>}
                     <div className={styles.buttons}>
                         <RoundedButton
                             label="Cancelar"
@@ -55,7 +58,7 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
                             onClick={handleCancelar} />
 
                         <RoundedButton
-                            label="Salvar"
+                            label="Enviar"
                             buttonKind={ButtonKind.ConfirmButton}
                             width="120px"
                             submit />
@@ -65,25 +68,33 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
         )
     }
 
-    const CadastroUsuarioForm = withFormik<IFormProps, ICadastroGrupoValues>({
-        mapPropsToValues: () => ({ name: '' }),
+    const ConviteMembroForm = withFormik<IFormProps, IConvidarMembroValues>({
+        mapPropsToValues: () => ({ email: '', groupId: groupId }),
         handleSubmit: async (values) => {
 
-            await api.post(URI, { name: values.name, administrator: { id: '607e3e462dee1a2fc70737a4' } })
+            const body = {
+                user: { email: values.email },
+                group: { id: groupId }
+            }
+
+            await api.post(URI, body)
                 .then((res: any) => {
-                    openSuccessNotification('Salvo com sucesso!')
                     setVisible(false)
+                    openSuccessNotification('Convite enviado com sucesso!')
+                    setTimeout(() => { window.location.reload() }, 1000)
                 })
                 .catch((err: any) => {
+                    setVisible(false)
                     openErrorNotification(err.response.data)
                 })
-
         },
-        validate: (values: ICadastroGrupoValues) => {
-            let errors: FormikErrors<ICadastroGrupoValues> = {}
+        validate: (values: IConvidarMembroValues) => {
+            let errors: FormikErrors<IConvidarMembroValues> = {}
 
-            if (!values.name) {
-                errors.name = 'O nome do grupo é obrigatório!'
+            if (!values.email) {
+                errors.email = 'O email é obrigatório!';
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Email inválido!';
             }
 
             return errors;
@@ -93,18 +104,18 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
     return (
         <Modal
             className={styles.modal}
-            title={<div className={styles.title}> Novo Grupo de Estudos </div>}
+            title={<div className={styles.title}> Convidar membro </div>}
             closable={false}
             centered
             visible={visible}
             footer="">
 
             <div className={styles.content}>
-                <CadastroUsuarioForm />
+                <ConviteMembroForm />
             </div>
 
         </Modal>
     )
 }
 
-export default CadastroGrupo
+export default ConvidarMembro
