@@ -1,6 +1,7 @@
 import { Collapse } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 import CardContainer from '../../components/base/CardContainer'
+import CadastroQuestionario from '../../components/CadastroQuestionario/CadastroQuestionario'
 import styles from '../../styles/pages/grupo_detalhes.module.css'
 import RoundedButton from '../../components/base/RoundedButton'
 import { api } from '../../services/api'
@@ -12,6 +13,9 @@ interface IGroupProps {
 }
 
 const GroupDetails = ({ group }: IGroupProps) => {
+    const [visibleQuestionnaire, setVisibleQuestionnaire] = useState(false)
+    const [visibleMember, setVisibleMember] = useState(false)
+    const [groupId, setGroupId] = useState('')
 
     // console.log('Group: ', group)
     const grupo = new Group().fromJSON(group)
@@ -27,6 +31,8 @@ const GroupDetails = ({ group }: IGroupProps) => {
                     color="var(--orange)"
                     onClick={(event) => {
                         event.stopPropagation()
+                        label.includes('Membros') ? setVisibleMember(true) : setVisibleQuestionnaire(true)
+                        setGroupId(group.id)
                     }}
                 />
             </div>
@@ -35,6 +41,9 @@ const GroupDetails = ({ group }: IGroupProps) => {
 
     return (
         <div>
+            <CadastroQuestionario visible={visibleQuestionnaire} setVisible={setVisibleQuestionnaire} groupId={groupId} />
+            {/* <CadastroMembro visible={visibleMember} setVisible={setVisibleMember} /> */}
+
             <CardContainer >
                 <h1 className={styles.titleHolder}>{grupo.name}</h1>
                 <div>
@@ -72,10 +81,10 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                 </div>
                                                 <div className={styles.containerButton}>
                                                     <button type="button" className={styles.buttons}>
-                                                        <img src="/icons/eye.svg" alt="Icone de deletar" style={{ width: "28px", height: "28px" }}/>
+                                                        <img src="/icons/eye.svg" alt="Icone de deletar" style={{ width: "28px", height: "28px" }} />
                                                     </button>
                                                     <button type="button" className={styles.buttons}>
-                                                        <img src="/icons/lixeira.svg" alt="Icone de deletar"/>
+                                                        <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                     </button>
                                                 </div>
                                             </li>
