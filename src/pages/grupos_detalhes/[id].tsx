@@ -2,10 +2,13 @@ import { Collapse } from 'antd'
 import React, { useState } from 'react'
 import CardContainer from '../../components/base/CardContainer'
 import CadastroQuestionario from '../../components/CadastroQuestionario/CadastroQuestionario'
+import DeletarQuestionario from '../../components/DeletarQuestionario/DeletarQuestionario'
 import styles from '../../styles/pages/grupo_detalhes.module.css'
-import RoundedButton from '../../components/base/RoundedButton'
+import RoundedButton, { ButtonKind } from '../../components/base/RoundedButton'
+import { Modal } from 'antd'
 import { api } from '../../services/api'
 import { Group } from '../../domain/model/group'
+import { Questionnaire } from '../../domain/model/questionnaire'
 const { Panel } = Collapse
 
 interface IGroupProps {
@@ -15,7 +18,9 @@ interface IGroupProps {
 const GroupDetails = ({ group }: IGroupProps) => {
     const [visibleQuestionnaire, setVisibleQuestionnaire] = useState(false)
     const [visibleMember, setVisibleMember] = useState(false)
+    const [visibleModalConfirm, setVisibleModalConfirm] = useState(false)
     const [groupId, setGroupId] = useState('')
+    const [questionnaire, setQuestionnaire] = useState(new Questionnaire())
 
     // console.log('Group: ', group)
     const grupo = new Group().fromJSON(group)
@@ -39,10 +44,17 @@ const GroupDetails = ({ group }: IGroupProps) => {
         )
     }
 
+    function handleDelete(event: any, questionnaire: Questionnaire) {
+        event.preventDefault()
+        setVisibleModalConfirm(true)
+        setQuestionnaire(questionnaire)
+    }
+
     return (
         <div>
             <CadastroQuestionario visible={visibleQuestionnaire} setVisible={setVisibleQuestionnaire} groupId={groupId} />
             {/* <CadastroMembro visible={visibleMember} setVisible={setVisibleMember} /> */}
+            <DeletarQuestionario visible={visibleModalConfirm} setVisible={setVisibleModalConfirm} questionnaire={questionnaire} />
 
             <CardContainer >
                 <h1 className={styles.titleHolder}>{grupo.name}</h1>
@@ -81,9 +93,9 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                 </div>
                                                 <div className={styles.containerButton}>
                                                     <button type="button" className={styles.buttons}>
-                                                        <img src="/icons/eye.svg" alt="Icone de deletar" style={{ width: "28px", height: "28px" }} />
+                                                        <img src="/icons/eye.svg" alt="Icone de visualizar" style={{ width: "28px", height: "28px" }} />
                                                     </button>
-                                                    <button type="button" className={styles.buttons}>
+                                                    <button type="button" className={styles.buttons} onClick={e => handleDelete(e, questionnair)}>
                                                         <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                     </button>
                                                 </div>
@@ -96,7 +108,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                     </Collapse>
                 </div>
             </CardContainer>
-        </div>
+        </div >
     )
 }
 
