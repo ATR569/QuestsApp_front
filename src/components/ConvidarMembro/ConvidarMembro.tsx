@@ -46,7 +46,7 @@ const ConvidarMembro: React.FC<IConvidarMembroProps> = ({ visible, setVisible, g
                         label="Email do convidado"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.discipline}
+                        value={values.email}
                         name={'email'}
                     />
                     {errors.email && touched.email && <div className={styles.feedback}>{errors.email}</div>}
