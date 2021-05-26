@@ -10,6 +10,7 @@ import { Modal } from 'antd'
 import { api } from '../../services/api'
 import { Group } from '../../domain/model/group'
 import { Questionnaire } from '../../domain/model/questionnaire'
+import Link from 'next/link'
 const { Panel } = Collapse
 
 interface IGroupProps {
@@ -63,48 +64,58 @@ const GroupDetails = ({ group }: IGroupProps) => {
                     <Collapse defaultActiveKey={['0']}>
 
                         <Panel header={renderButton('Membros', 'Convidar Membro')} key="1" style={{ background: "#DCDCDC" }} >
-                            <div className={styles.containerPanel}>
-                                <ul>
-                                    {grupo.members.map(member => {
-                                        return (
-                                            <li key={member.id}>
-                                                <div className={styles.spans}>
-                                                    <span>{member.name}</span>
-                                                    <span>{member.email}</span>
-                                                </div>
-                                                <button type="button" className={styles.buttons}>
-                                                    <img src="/icons/lixeira.svg" alt="Icone de deletar" />
-                                                </button>
-                                            </li>
-                                        )
-                                    })}
-                                </ul>
-                            </div>
+                            {grupo.members.length > 0 ? (
+                                <div className={styles.containerPanel}>
+                                    <ul>
+                                        {grupo.members.map(member => {
+                                            return (
+                                                <li key={member.id}>
+                                                    <div className={styles.spans}>
+                                                        <span>{member.name}</span>
+                                                        <span>{member.email}</span>
+                                                    </div>
+                                                    <button type="button" className={styles.buttons}>
+                                                        <img src="/icons/lixeira.svg" alt="Icone de deletar" />
+                                                    </button>
+                                                </li>
+                                            )
+                                        })}
+                                    </ul>
+                                </div>
+                            ) : (<></>)}
                         </Panel>
 
                         <Panel header={renderButton('Questionários', 'Adicionar Questionários')} key="2" style={{ background: "#DCDCDC" }}>
-                            <div className={styles.containerPanel}>
-                                <ul>
-                                    {grupo.questionnaires.map(questionnair => {
-                                        return (
-                                            <li key={questionnair.id}>
-                                                <div className={styles.spans}>
-                                                    <span>{questionnair.discipline}</span>
-                                                    <span>{`Número de Questões: ${questionnair.questionsCount}`}</span>
-                                                </div>
-                                                <div className={styles.containerButton}>
-                                                    <button type="button" className={styles.buttons}>
-                                                        <img src="/icons/eye.svg" alt="Icone de visualizar" style={{ width: "28px", height: "28px" }} />
-                                                    </button>
-                                                    <button type="button" className={styles.buttons} onClick={e => handleDelete(e, questionnair)}>
-                                                        <img src="/icons/lixeira.svg" alt="Icone de deletar" />
-                                                    </button>
-                                                </div>
-                                            </li>
-                                        )
-                                    })}
-                                </ul>
-                            </div>
+                            {grupo.questionnaires.length > 0 ? (
+                                <div className={styles.containerPanel}>
+                                    <ul>
+                                        {grupo.questionnaires.map(questionnair => {
+                                            return (
+                                                <li key={questionnair.id}>
+                                                    <div className={styles.spans}>
+                                                        <span>{questionnair.discipline}</span>
+                                                        <span>{`Número de Questões: ${questionnair.questionsCount}`}</span>
+                                                    </div>
+                                                    <div className={styles.containerButton}>
+                                                        <button
+                                                            type="button"
+                                                            className={styles.buttons}
+                                                        >
+                                                            <Link href={`/questionarios_detalhes/${questionnair.id}`}>
+                                                                <img src="/icons/eye.svg" alt="Icone de visualizar" style={{ width: "28px", height: "28px" }} />
+                                                            </Link>
+                                                        </button>
+                                                        <button type="button" className={styles.buttons} onClick={e => handleDelete(e, questionnair)}>
+                                                            <img src="/icons/lixeira.svg" alt="Icone de deletar" />
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            )
+                                        })}
+                                    </ul>
+                                </div>
+
+                            ) : (<></>)}
                         </Panel>
                     </Collapse>
                 </div>
