@@ -60,37 +60,3 @@ const CardGroup: React.FC<IGroupProps> = ({ group }) => {
 }
 
 export default CardGroup
-
-// export default class CardGroup extends Component<IGroupProps, {}> {
-
-//     render(): any {
-
-//         const group: Group = this.props.group
-
-//         return (
-//             <div className={styles.card_group}>
-
-//                 <div className={styles.del_group} >
-//                     <button className={styles.buttons}>
-//                         <img src='icons/fechar.svg' className={styles.img_trash}></img>
-//                     </button>
-//                 </div>
-
-//                 <div className={styles.container_img}>
-//                     <img src='icons/group.svg' className={styles.img}></img>
-//                 </div>
-
-//                 <div className={styles.title_group}>
-//                     {group.name}
-//                 </div>
-
-//                 <div className={styles.informations}>
-//                     <span>{`${group.membersCount} Membros`}</span>
-//                     <span>{`${group.questionnairesCount} Questionários`}</span>
-//                 </div>
-
-//                 <div className={styles.effect} />
-//             </div>
-//         )
-//     }
-// }

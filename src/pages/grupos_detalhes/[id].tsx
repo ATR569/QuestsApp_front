@@ -1,16 +1,16 @@
 import { Collapse } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CardContainer from '../../components/base/CardContainer'
 import CadastroQuestionario from '../../components/CadastroQuestionario/CadastroQuestionario'
 import DeletarQuestionario from '../../components/DeletarQuestionario/DeletarQuestionario'
 import ConvidarMembro from '../../components/ConvidarMembro/ConvidarMembro'
 import styles from '../../styles/pages/grupo_detalhes.module.css'
 import RoundedButton, { ButtonKind } from '../../components/base/RoundedButton'
-import { Modal } from 'antd'
 import { api } from '../../services/api'
 import { Group } from '../../domain/model/group'
 import { Questionnaire } from '../../domain/model/questionnaire'
 import Link from 'next/link'
+import { AuthService } from '../../services/auth'
 const { Panel } = Collapse
 
 interface IGroupProps {
@@ -23,25 +23,42 @@ const GroupDetails = ({ group }: IGroupProps) => {
     const [visibleModalConfirm, setVisibleModalConfirm] = useState(false)
     const [groupId, setGroupId] = useState('')
     const [questionnaire, setQuestionnaire] = useState(new Questionnaire())
+    const [loggedUserId, setLoggedUserId] = useState('')
 
-    // console.log('Group: ', group)
     const grupo = new Group().fromJSON(group)
+
+    useEffect(() => {
+        const user = AuthService.decodeToken().user
+        setLoggedUserId(user.id)
+    }, [])
+
+    function checkAdmin(): boolean {
+        // console.log("Group admin id: ", group.administrator.id);
+        // console.log("user logado id: ", loggedUserId);
+
+        return group.administrator.id === loggedUserId
+    }
 
     function renderButton(label: string, buttonLabel: string) {
         return (
             <div className={styles.utilsButtons}>
                 <span>{label}</span>
-                <RoundedButton
-                    label={buttonLabel}
-                    height="1.675rem"
-                    outlined={true}
-                    color="var(--orange)"
-                    onClick={(event) => {
-                        event.stopPropagation()
-                        label.includes('Membros') ? setVisibleInvite(true) : setVisibleQuestionnaire(true)
-                        setGroupId(group.id)
-                    }}
-                />
+                {buttonLabel == 'Adicionar Questionários' || checkAdmin() ? (
+                    <RoundedButton
+                        label={buttonLabel}
+                        height="1.675rem"
+                        outlined={true}
+                        color="var(--orange)"
+                        onClick={(event) => {
+                            event.stopPropagation()
+                            label.includes('Membros') ? setVisibleInvite(true) : setVisibleQuestionnaire(true)
+                            setGroupId(group.id)
+                        }}
+                    />
+                ) : (
+                    <>
+                    </>
+                )}
             </div>
         )
     }
@@ -74,7 +91,10 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                         <span>{member.name}</span>
                                                         <span>{member.email}</span>
                                                     </div>
-                                                    <button type="button" className={styles.buttons}>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.buttons}
+                                                        style={checkAdmin() ? {} : { visibility: 'hidden' }} >
                                                         <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                     </button>
                                                 </li>
@@ -105,7 +125,12 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                                 <img src="/icons/eye.svg" alt="Icone de visualizar" style={{ width: "28px", height: "28px" }} />
                                                             </Link>
                                                         </button>
-                                                        <button type="button" className={styles.buttons} onClick={e => handleDelete(e, questionnair)}>
+                                                        <button
+                                                            type="button"
+                                                            className={styles.buttons}
+                                                            onClick={e => handleDelete(e, questionnair)}
+                                                            style={checkAdmin() ? {} : { visibility: 'hidden' }}
+                                                        >
                                                             <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                         </button>
                                                     </div>
