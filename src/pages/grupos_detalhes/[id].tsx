@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CardContainer from '../../components/base/CardContainer'
 import CadastroQuestionario from '../../components/CadastroQuestionario/CadastroQuestionario'
 import DeletarQuestionario from '../../components/DeletarQuestionario/DeletarQuestionario'
+import DeletarMembro from '../../components/DeletarMembro/DeletarMembro'
 import ConvidarMembro from '../../components/ConvidarMembro/ConvidarMembro'
 import styles from '../../styles/pages/grupo_detalhes.module.css'
 import RoundedButton, { ButtonKind } from '../../components/base/RoundedButton'
@@ -11,6 +12,7 @@ import { Group } from '../../domain/model/group'
 import { Questionnaire } from '../../domain/model/questionnaire'
 import Link from 'next/link'
 import { AuthService } from '../../services/auth'
+import { User } from '../../domain/model/user'
 const { Panel } = Collapse
 
 interface IGroupProps {
@@ -18,12 +20,14 @@ interface IGroupProps {
 }
 
 const GroupDetails = ({ group }: IGroupProps) => {
-    const [visibleQuestionnaire, setVisibleQuestionnaire] = useState(false)
+    const [visibleAddQuestionnaire, setVisibleAddQuestionnaire] = useState(false)
     const [visibleInvite, setVisibleInvite] = useState(false)
-    const [visibleModalConfirm, setVisibleModalConfirm] = useState(false)
+    const [visibleDelQuestionnaire, setVisibleDelQuestionnaire] = useState(false)
+    const [visibleDelMember, setVisibleDelMember] = useState(false)
     const [groupId, setGroupId] = useState('')
     const [questionnaire, setQuestionnaire] = useState(new Questionnaire())
     const [loggedUserId, setLoggedUserId] = useState('')
+    const [member, setMember] = useState(new User())
 
     const grupo = new Group().fromJSON(group)
 
@@ -33,9 +37,6 @@ const GroupDetails = ({ group }: IGroupProps) => {
     }, [])
 
     function checkAdmin(): boolean {
-        // console.log("Group admin id: ", group.administrator.id);
-        // console.log("user logado id: ", loggedUserId);
-
         return group.administrator.id === loggedUserId
     }
 
@@ -51,7 +52,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                         color="var(--orange)"
                         onClick={(event) => {
                             event.stopPropagation()
-                            label.includes('Membros') ? setVisibleInvite(true) : setVisibleQuestionnaire(true)
+                            label.includes('Membros') ? setVisibleInvite(true) : setVisibleAddQuestionnaire(true)
                             setGroupId(group.id)
                         }}
                     />
@@ -65,15 +66,22 @@ const GroupDetails = ({ group }: IGroupProps) => {
 
     function handleDelete(event: any, questionnaire: Questionnaire) {
         event.preventDefault()
-        setVisibleModalConfirm(true)
+        setVisibleDelQuestionnaire(true)
         setQuestionnaire(questionnaire)
+    }
+
+    function handleDeleteMember(event: any, member: User) {
+        event.preventDefault()
+        setMember(member)
+        setVisibleDelMember(true)
     }
 
     return (
         <div>
-            <CadastroQuestionario visible={visibleQuestionnaire} setVisible={setVisibleQuestionnaire} groupId={groupId} />
+            <CadastroQuestionario visible={visibleAddQuestionnaire} setVisible={setVisibleAddQuestionnaire} groupId={groupId} />
             <ConvidarMembro visible={visibleInvite} setVisible={setVisibleInvite} groupId={groupId} />
-            <DeletarQuestionario visible={visibleModalConfirm} setVisible={setVisibleModalConfirm} questionnaire={questionnaire} />
+            <DeletarQuestionario visible={visibleDelQuestionnaire} setVisible={setVisibleDelQuestionnaire} questionnaire={questionnaire} />
+            <DeletarMembro visible={visibleDelMember} setVisible={setVisibleDelMember} group={group} member={member} />
 
             <CardContainer >
                 <h1 className={styles.titleHolder}>{grupo.name}</h1>
@@ -94,6 +102,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                     <button
                                                         type="button"
                                                         className={styles.buttons}
+                                                        onClick={e => handleDeleteMember(e, member)}
                                                         style={checkAdmin() ? {} : { visibility: 'hidden' }} >
                                                         <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                     </button>
