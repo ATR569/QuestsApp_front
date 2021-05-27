@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './CadastroGrupo.module.css'
 import RoundedButton, { ButtonKind } from '../base/RoundedButton'
 import InputForm from '../base/InputForm'
@@ -6,6 +6,7 @@ import { Modal } from 'antd'
 import { Form, withFormik, FormikErrors } from 'formik'
 import { api } from '../../services/api'
 import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
+import { AuthService } from '../../services/auth'
 
 const URI = 'groups'
 
@@ -23,6 +24,13 @@ interface IFormProps {
 }
 
 const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) => {
+    const [loggedUserId, setLoggedUserId] = useState('')
+
+    useEffect(() => {
+        const user = AuthService.decodeToken().user
+        setLoggedUserId(user.id)
+    }, [])
+
     const handleCancelar = (event: Event) => {
         event.preventDefault()
         setVisible(false)
@@ -68,11 +76,11 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
     const CadastroUsuarioForm = withFormik<IFormProps, ICadastroGrupoValues>({
         mapPropsToValues: () => ({ name: '' }),
         handleSubmit: async (values) => {
-
-            await api.post(URI, { name: values.name, administrator: { id: '607e3e462dee1a2fc70737a4' } })
+            await api.post(URI, { name: values.name, administrator: { id: loggedUserId } })
                 .then((res: any) => {
                     openSuccessNotification('Salvo com sucesso!')
                     setVisible(false)
+                    setTimeout(() => { window.location.reload() }, 1000)
                 })
                 .catch((err: any) => {
                     openErrorNotification(err.response.data)
