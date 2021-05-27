@@ -86,7 +86,7 @@
     align-items: flex-start;
     width: 100%;
     flex-wrap: wrap;
-    font-size: .7rem;
+    font-size: 10px;
     justify-content: space-between;
 }
 
