@@ -1,20 +1,30 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
+import { AuthService } from '../../services/auth'
 import styles from './UserProfile.module.css'
-// import { TemplateContext } from '../../contexts/TemplateContext'
+import { User } from '../../domain/model/user'
+import { UserContext } from '../../contexts/UserContext'
 
 function UserProfile() {
-    // const { name, institution } = useContext(TemplateContext)
+    const { user, setUser } = useContext(UserContext)
+
+    useEffect(() => {
+        const decoded = AuthService.decodeToken()
+
+        if (decoded !== undefined) {
+            const userContext = new User().fromJSON(decoded.user)
+            setUser(userContext)
+        }
+    }, [])
 
     return (
         <div className={styles.container}>
             <img src="/icons/profile-user-orange.svg" alt="Icone Profile" />
             <div className={styles.text}>
-                {/* <h3>{name}</h3>
-                <h6>{institution}</h6> */}
-                <div className={styles.userName}>Fulano de Tal</div>
-                <div className={styles.userInstitution}>UEPB</div>
+                <div className={styles.userName}> {user.name} </div>
+                <div className={styles.userInstitution}>{user.institution}</div>
             </div>
         </div>
     )
 }
+
 export default UserProfile

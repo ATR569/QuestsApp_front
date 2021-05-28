@@ -32,7 +32,7 @@ const DeletarGrupo: React.FC<IDeletarGrupoProps> = ({ visible, setVisible, group
                 setTimeout(() => window.location.reload(), 1000)
             })
             .catch((err: any) => {
-                openErrorNotification(err.response.data)
+                openErrorNotification(err)
             })
     }
 

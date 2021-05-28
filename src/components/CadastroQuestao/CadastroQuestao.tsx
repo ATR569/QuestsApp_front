@@ -79,7 +79,7 @@ const CadastroQuestao: React.FC<ICadastroQuestaoProps> = ({ visible, setVisible,
                     window.location.reload()
                 })
                 .catch((err: any) => {
-                    openErrorNotification(err.response.data)
+                    openErrorNotification(err)
                 })
         },
         validate: (values: ICadastroQuestaoValues) => {
