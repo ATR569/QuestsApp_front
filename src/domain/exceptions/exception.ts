@@ -28,8 +28,8 @@ export class ApiException {
     }
 
     public fromJSON(json: any) {
-        if (json === undefined){ 
-            json = {}
+        if (!json){ 
+            json = {status: 500, message: 'Erro interno no servidor.'}
         }    
         
         if (json.code !== undefined) this._code = json.code
@@ -38,5 +38,4 @@ export class ApiException {
 
         return this
     }
-
 }

@@ -3,11 +3,13 @@ import styles from './Login.module.css'
 import RoundedButton from '../base/RoundedButton'
 import InputForm from '../base/InputForm'
 import { SignContext } from '../../contexts/SignContext'
+import { UserContext } from '../../contexts/UserContext'
 import { AuthService } from '../../services/auth'
 import { useRouter } from 'next/router'
-import { Form, useFormik, FormikErrors, withFormik } from 'formik'
+import { Form, FormikErrors, withFormik } from 'formik'
 import { api } from '../../services/api'
 import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
+import { User } from '../../domain/model/user'
 
 const URI = 'auth'
 
@@ -23,6 +25,7 @@ interface IFormProps {
 
 const Login: React.FC = () => {
     const { toggleMode } = useContext(SignContext)
+    const { setUser } = useContext(UserContext)
     const router = useRouter()
 
     const changeToCreateMode = (evt: any): void => {
@@ -89,7 +92,7 @@ const Login: React.FC = () => {
                     openSuccessNotification('Bem Vindo ao QuestsApp!!!')
                 })
                 .catch((err: any) => {
-                    openErrorNotification(err.response ? err.response.data : err)
+                    openErrorNotification(err)
                 })
         },
         validate: (values: ILoginValues) => {
