@@ -5,6 +5,7 @@ import CadastroQuestionario from '../../components/CadastroQuestionario/Cadastro
 import DeletarQuestionario from '../../components/DeletarQuestionario/DeletarQuestionario'
 import DeletarMembro from '../../components/DeletarMembro/DeletarMembro'
 import ConvidarMembro from '../../components/ConvidarMembro/ConvidarMembro'
+import EditInPlace from '../../components/EditInPlace/EditInPlace'
 import styles from '../../styles/pages/grupo_detalhes.module.css'
 import RoundedButton, { ButtonKind } from '../../components/base/RoundedButton'
 import { api } from '../../services/api'
@@ -13,7 +14,10 @@ import { Questionnaire } from '../../domain/model/questionnaire'
 import Link from 'next/link'
 import { AuthService } from '../../services/auth'
 import { User } from '../../domain/model/user'
+import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
 const { Panel } = Collapse
+
+const URI = 'groups'
 
 interface IGroupProps {
     group: Group
@@ -25,6 +29,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
     const [visibleDelQuestionnaire, setVisibleDelQuestionnaire] = useState(false)
     const [visibleDelMember, setVisibleDelMember] = useState(false)
     const [groupId, setGroupId] = useState('')
+    const [groupName, setGroupName] = useState('')
     const [questionnaire, setQuestionnaire] = useState(new Questionnaire())
     const [loggedUserId, setLoggedUserId] = useState('')
     const [member, setMember] = useState(new User())
@@ -34,6 +39,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
     useEffect(() => {
         const user = AuthService.decodeToken().user
         setLoggedUserId(user.id)
+        setGroupName(group.name)
     }, [])
 
     function checkAdmin(): boolean {
@@ -76,6 +82,18 @@ const GroupDetails = ({ group }: IGroupProps) => {
         setVisibleDelMember(true)
     }
 
+    async function updateGroupName(groupName: string) {
+        await api.patch(URI.concat(`/${group.id}`), { name: groupName, administrator: { id: loggedUserId } })
+            .then((res: any) => {
+                setGroupName(groupName)
+                openSuccessNotification('Atualizado com sucesso!')
+                setTimeout(() => window.location.reload(), 1000)
+            })
+            .catch((err: any) => {
+                openErrorNotification(err.response.data)
+            })
+    }
+
     return (
         <div>
             <CadastroQuestionario visible={visibleAddQuestionnaire} setVisible={setVisibleAddQuestionnaire} groupId={groupId} />
@@ -84,7 +102,8 @@ const GroupDetails = ({ group }: IGroupProps) => {
             <DeletarMembro visible={visibleDelMember} setVisible={setVisibleDelMember} group={group} member={member} />
 
             <CardContainer >
-                <h1 className={styles.titleHolder}>{grupo.name}</h1>
+                <EditInPlace name={groupName} isAdmin={checkAdmin()} onChangeValue={updateGroupName} />
+
                 <div>
                     <Collapse defaultActiveKey={['0']}>
 
