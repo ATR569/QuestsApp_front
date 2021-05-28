@@ -10,15 +10,18 @@ import { Group } from '../domain/model/group'
 import Link from 'next/link'
 import { api } from '../services/api'
 import { openErrorNotification } from '../utils/notification'
+import { useRouter } from 'next/router'
+import { AuthService } from '../services/auth'
 
 const URI = 'groups'
 
 export default function Grupo() {
 
     const { changePage } = useContext(TemplateContext)
-    const [visible, setVisible] = useState(false)
+    const [cadastroVisible, setCadastroVisible] = useState(false)
     const [groups, setGroups] = useState([])
     const [groupsMapped, setGroupsMapped] = useState([])
+    const router = useRouter()
 
     useEffect(() => {
         changePage('grupos')
@@ -26,14 +29,20 @@ export default function Grupo() {
     }, [])
 
     function getGroups() {
-        api.get(URI)
+        const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
+
+        api.get(URI, headers)
             .then((res: any) => {
                 setGroups(res.data)
                 setGroupsMapped(mapGroups(res.data))
             })
-            .catch((err: any) =>
+            .catch((err: any) => {
                 openErrorNotification(err)
-            )
+                if (err.response && err.response.status === 401) {
+                    AuthService.removeToken()
+                    setTimeout(() => router.push('/').then(() => router.reload()), 1000)
+                }
+            })
     }
 
     function filterGroups(e) {
@@ -57,12 +66,12 @@ export default function Grupo() {
     function renderGroups() {
         return (
             <div>
-                <CadastroGrupo visible={visible} setVisible={setVisible} />
+                <CadastroGrupo visible={cadastroVisible} setVisible={setCadastroVisible} />
 
                 <CardContainer>
                     <div className={styles.barra_topo}>
                         <SearchFilter onChange={filterGroups} />
-                        <RoundedButton label="Adicionar Grupo" buttonKind={ButtonKind.ConfirmButton} onClick={() => setVisible(true)} />
+                        <RoundedButton label="Adicionar Grupo" buttonKind={ButtonKind.ConfirmButton} onClick={() => setCadastroVisible(true)} />
                     </div>
                     <div className={styles.grupos}>
                         {groupsMapped}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import styles from './CadastroGrupo.module.css'
 import RoundedButton, { ButtonKind } from '../base/RoundedButton'
 import InputForm from '../base/InputForm'
@@ -6,7 +6,9 @@ import { Modal } from 'antd'
 import { Form, withFormik, FormikErrors } from 'formik'
 import { api } from '../../services/api'
 import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
+import { UserContext } from '../../contexts/UserContext'
 import { AuthService } from '../../services/auth'
+import { useRouter } from 'next/router'
 
 const URI = 'groups'
 
@@ -24,12 +26,8 @@ interface IFormProps {
 }
 
 const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) => {
-    const [loggedUserId, setLoggedUserId] = useState('')
-
-    useEffect(() => {
-        const user = AuthService.decodeToken().user
-        setLoggedUserId(user.id)
-    }, [])
+    const { user } = useContext(UserContext)
+    const router = useRouter()
 
     const handleCancelar = (event: Event) => {
         event.preventDefault()
@@ -73,17 +71,22 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
         )
     }
 
-    const CadastroUsuarioForm = withFormik<IFormProps, ICadastroGrupoValues>({
-        mapPropsToValues: () => ({ name: '' }),
+    const CadastroGrupoForm = withFormik<IFormProps, ICadastroGrupoValues>({
+        mapPropsToValues: () => ({ name: '', administrator: { id: user.id } }),
         handleSubmit: async (values) => {
-            await api.post(URI, { name: values.name, administrator: { id: loggedUserId } })
+            const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
+            await api.post(URI, values, headers)
                 .then((res: any) => {
                     openSuccessNotification('Salvo com sucesso!')
                     setVisible(false)
-                    setTimeout(() => { window.location.reload() }, 1000)
+                    setTimeout(() =>  router.reload() , 1000)
                 })
                 .catch((err: any) => {
                     openErrorNotification(err)
+                    if (err.response && err.response.status === 401) {
+                        AuthService.removeToken()
+                        setTimeout(() =>  router.push('/').then(() => router.reload()) , 1000)
+                    }
                 })
         },
         validate: (values: ICadastroGrupoValues) => {
@@ -107,7 +110,7 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
             footer="">
 
             <div className={styles.content}>
-                <CadastroUsuarioForm />
+                <CadastroGrupoForm />
             </div>
 
         </Modal>

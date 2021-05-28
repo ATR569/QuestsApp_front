@@ -1,13 +1,13 @@
 import { Collapse } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CardContainer from '../../components/base/CardContainer'
 import RoundedButton from '../../components/base/RoundedButton'
 import CadastroQuestao from '../../components/CadastroQuestao/CadastroQuestao'
 import DeletarQuestao from '../../components/DeletarQuestao/DeletarQuestao'
+import { UserContext } from '../../contexts/UserContext'
 import { Question } from '../../domain/model/question'
 import { Questionnaire } from '../../domain/model/questionnaire'
 import { api } from '../../services/api'
-import { AuthService } from '../../services/auth'
 import styles from '../../styles/pages/questionarios_detalhes.module.css'
 
 const { Panel } = Collapse
@@ -20,16 +20,11 @@ const QuestionnairesDetails = ({ questionnaire }: IGroupProps) => {
     const [visibleQuestion, setVisibleQuestion] = useState(false)
     const [visibleModalConfirm, setVisibleModalConfirm] = useState(false)
     const [questionnaireId, setQuestionnaireId] = useState('')
-    const [creatorId, setCreatorId] = useState('')
     const [question, setQuestion] = useState(new Question())
+    const { user } = useContext(UserContext)
 
-    useEffect(() => {
-        const user = AuthService.decodeToken().user
-        setCreatorId(user.id)
-    }, [])
-
-    function checkAdmin(creatorQuestionId: string, loggedUserId: string): boolean {
-        return creatorQuestionId === loggedUserId
+    function checkAdmin(creatorQuestionId: string): boolean {
+        return creatorQuestionId === user.id
     }
 
     function renderButton(label: string, buttonLabel: string) {
@@ -59,7 +54,7 @@ const QuestionnairesDetails = ({ questionnaire }: IGroupProps) => {
 
     return (
         <div>
-            <CadastroQuestao visible={visibleQuestion} setVisible={setVisibleQuestion} questionnaireId={questionnaireId} creatorId={creatorId} />
+            <CadastroQuestao visible={visibleQuestion} setVisible={setVisibleQuestion} questionnaireId={questionnaireId} creatorId={user.id} />
             <DeletarQuestao visible={visibleModalConfirm} setVisible={setVisibleModalConfirm} question={question} />
 
             <CardContainer >
@@ -82,7 +77,7 @@ const QuestionnairesDetails = ({ questionnaire }: IGroupProps) => {
                                                             <img src="/icons/eye.svg" alt="Icone de visualizar" style={{ width: "28px", height: "28px" }} />
                                                         </button>
 
-                                                        {checkAdmin(questions.creator.id, creatorId) ? (
+                                                        {checkAdmin(questions.creator.id) ? (
                                                             <button
                                                                 type="button"
                                                                 className={styles.buttons}
@@ -112,13 +107,12 @@ const QuestionnairesDetails = ({ questionnaire }: IGroupProps) => {
 
 export default QuestionnairesDetails
 
-export async function getServerSideProps(ctx) {
-    const { id } = ctx.query
-    const { data } = await api.get(`questionnaires/${id}`)
+export async function getServerSideProps(ctx: any) {
+    const token = ctx.req.cookies.questsapp
+    const headers = { headers: { authorization: `Bearer ${token}` } }
 
-    return {
-        props: {
-            questionnaire: data
-        }
-    }
+    const { id } = ctx.query
+    const result = await api.get(`questionnaires/${id}`, headers)
+
+    return result ? { props: { questionnaire: result.data } } : { props: { questionnaire: undefined } }
 }

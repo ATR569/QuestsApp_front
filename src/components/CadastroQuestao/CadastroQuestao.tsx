@@ -6,6 +6,8 @@ import { Modal } from 'antd'
 import { Form, withFormik, FormikErrors } from 'formik'
 import { api } from '../../services/api'
 import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
+import { useRouter } from 'next/router'
+import { AuthService } from '../../services/auth'
 
 const URI = 'questions'
 
@@ -25,6 +27,7 @@ interface IFormProps {
 }
 
 const CadastroQuestao: React.FC<ICadastroQuestaoProps> = ({ visible, setVisible, questionnaireId, creatorId }) => {
+    const router = useRouter()
 
     const handleCancelar = (event: Event) => {
         event.preventDefault()
@@ -71,15 +74,20 @@ const CadastroQuestao: React.FC<ICadastroQuestaoProps> = ({ visible, setVisible,
     const CadastroQuestaoForm = withFormik<IFormProps, ICadastroQuestaoValues>({
         mapPropsToValues: () => ({ description: '', creator: { id: creatorId }, questionnaireId: questionnaireId }),
         handleSubmit: async (values) => {
+            const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
 
-            await api.post(URI, values)
+            await api.post(URI, values, headers)
                 .then((res: any) => {
                     openSuccessNotification('Salvo com sucesso!')
                     setVisible(false)
-                    window.location.reload()
+                    setTimeout(() =>  router.reload() , 1000)
                 })
                 .catch((err: any) => {
                     openErrorNotification(err)
+                    if (err.response && err.response.status === 401) {
+                        AuthService.removeToken()
+                        setTimeout(() => router.push('/').then(() => router.reload()), 1000)
+                    }
                 })
         },
         validate: (values: ICadastroQuestaoValues) => {

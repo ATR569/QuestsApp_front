@@ -3,10 +3,12 @@ import { AuthService } from '../../services/auth'
 import styles from './UserProfile.module.css'
 import { User } from '../../domain/model/user'
 import { UserContext } from '../../contexts/UserContext'
-
 function UserProfile() {
     const { user, setUser } = useContext(UserContext)
 
+    /**
+     * User profile is responsible to set the user context
+     */
     useEffect(() => {
         const decoded = AuthService.decodeToken()
 
