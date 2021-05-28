@@ -46,7 +46,7 @@ const EditInPlace: React.FC<IFilterProps> = ({ name, isAdmin = false, onChangeVa
                 <div className={styles.content}>
                     <div className={styles.buttons}>
                         <button type="button" className={styles.button} style={isAdmin ? {} : { visibility: 'hidden' }} >
-                            <img className={styles.img} src="/icons/lupa.svg" alt="Icone de atualizar" onClick={edit} />
+                            <img className={styles.img} src="/icons/_lapis.svg" alt="Icone de atualizar" onClick={edit} />
                         </button>
                     </div>
 

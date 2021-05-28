@@ -1,5 +1,5 @@
 import { Collapse } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import CardContainer from '../../components/base/CardContainer'
 import CadastroQuestionario from '../../components/CadastroQuestionario/CadastroQuestionario'
 import DeletarQuestionario from '../../components/DeletarQuestionario/DeletarQuestionario'
@@ -15,6 +15,8 @@ import Link from 'next/link'
 import { AuthService } from '../../services/auth'
 import { User } from '../../domain/model/user'
 import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
+import { UserContext } from '../../contexts/UserContext'
+
 const { Panel } = Collapse
 
 const URI = 'groups'
@@ -24,6 +26,7 @@ interface IGroupProps {
 }
 
 const GroupDetails = ({ group }: IGroupProps) => {
+    const { user, setUser } = useContext(UserContext)
     const [visibleAddQuestionnaire, setVisibleAddQuestionnaire] = useState(false)
     const [visibleInvite, setVisibleInvite] = useState(false)
     const [visibleDelQuestionnaire, setVisibleDelQuestionnaire] = useState(false)
@@ -31,19 +34,23 @@ const GroupDetails = ({ group }: IGroupProps) => {
     const [groupId, setGroupId] = useState('')
     const [groupName, setGroupName] = useState('')
     const [questionnaire, setQuestionnaire] = useState(new Questionnaire())
-    const [loggedUserId, setLoggedUserId] = useState('')
     const [member, setMember] = useState(new User())
 
     const grupo = new Group().fromJSON(group)
 
     useEffect(() => {
-        const user = AuthService.decodeToken().user
-        setLoggedUserId(user.id)
+        const decoded = AuthService.decodeToken()
+
+        if (decoded !== undefined) {
+            const userContext = new User().fromJSON(decoded.user)
+            setUser(userContext)
+        }
+
         setGroupName(group.name)
     }, [])
 
     function checkAdmin(): boolean {
-        return group.administrator.id === loggedUserId
+        return group.administrator.id === user.id
     }
 
     function renderButton(label: string, buttonLabel: string) {
@@ -83,7 +90,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
     }
 
     async function updateGroupName(groupName: string) {
-        await api.patch(URI.concat(`/${group.id}`), { name: groupName, administrator: { id: loggedUserId } })
+        await api.patch(URI.concat(`/${group.id}`), { name: groupName, administrator: { id: user.id } })
             .then((res: any) => {
                 setGroupName(groupName)
                 openSuccessNotification('Atualizado com sucesso!')
@@ -122,7 +129,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                         type="button"
                                                         className={styles.buttons}
                                                         onClick={e => handleDeleteMember(e, member)}
-                                                        style={checkAdmin() ? {} : { visibility: 'hidden' }} >
+                                                        style={checkAdmin() ? { visibility: 'visible' } : { visibility: 'hidden' }} >
                                                         <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                     </button>
                                                 </li>
@@ -157,7 +164,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                             type="button"
                                                             className={styles.buttons}
                                                             onClick={e => handleDelete(e, questionnair)}
-                                                            style={checkAdmin() ? {} : { visibility: 'hidden' }}
+                                                            style={checkAdmin() ? { visibility: 'visible' } : { visibility: 'hidden' }}
                                                         >
                                                             <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                         </button>
