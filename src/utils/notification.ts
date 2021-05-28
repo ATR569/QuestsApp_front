@@ -12,8 +12,13 @@ const openNotification = (type: string, body: INotificationBody) => {
     })
 }
 
-export const openErrorNotification = (json: any) => {
-    const exception = new ApiException().fromJSON(json)
+export const openErrorNotification = (err: any) => {
+    let exception: ApiException
+
+    if (err !== undefined && err.response !== undefined && err.response.data !== undefined)
+        exception = new ApiException().fromJSON(err.response.data)
+    else
+        exception = new ApiException().fromJSON({})
     
     const notificationBody: INotificationBody = {
         message: exception.message,
@@ -30,5 +35,4 @@ export const openSuccessNotification = (message: string) => {
 
     return openNotification('success', notificationBody)
 }
-
  

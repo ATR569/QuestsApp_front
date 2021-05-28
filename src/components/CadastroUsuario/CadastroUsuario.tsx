@@ -141,7 +141,7 @@ const CadastroUsuario: React.FC<ICadastroUsuarioProps> = ({ }) => {
                     toggleMode()
                 })
                 .catch((err: any) => {
-                    openErrorNotification(err.response.data)
+                    openErrorNotification(err)
                 })
         },
         validate: (values: ICadastroUsuarioValues) => {

@@ -34,7 +34,7 @@ const DeletarQuestionario: React.FC<IDeletarQuestionarioProps> = ({ visible, set
                 }, 1000)
             })
             .catch((err: any) => {
-                openErrorNotification(err.response.data)
+                openErrorNotification(err)
             })
     }
 

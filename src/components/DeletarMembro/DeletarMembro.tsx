@@ -34,7 +34,7 @@ const DeletarMembro: React.FC<IDeletarMembroProps> = ({ visible, setVisible, gro
                 setTimeout(() => window.location.reload(), 1000)
             })
             .catch((err: any) => {
-                openErrorNotification(err.response.data)
+                openErrorNotification(err)
             })
     }
 
