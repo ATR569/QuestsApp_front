@@ -55,6 +55,10 @@ export class Questionnaire extends Entity implements IJSONTransformable<Question
     }
 
     public fromJSON(json: any): Questionnaire {
+        if (json === undefined) {
+            json = {}
+        }
+
         if (json.id !== undefined) this.id = json.id
         if (json.discipline !== undefined) this.discipline = json.discipline
         if (json.questions !== undefined) this.questions = json.questions
