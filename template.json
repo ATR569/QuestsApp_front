@@ -4,27 +4,39 @@
         "title": "Início",
         "subTitle": "Início",
         "path": "/",
-        "iconSrc": "/icons/botao-home.svg"
+        "iconSrc": "/icons/botao-home.svg",
+        "showInSideBar": true
     },
     "grupos": {
         "id": 2,
         "title": "Meus Grupos de Estudos",
         "subTitle": "Meus Grupos de Estudos",
         "path": "/grupos_estudos",
-        "iconSrc": "/icons/group.svg"
+        "iconSrc": "/icons/group.svg",
+        "showInSideBar": true
     },
     "perfil": {
         "id": 3,
         "title": "Dados Cadastrais",
         "subTitle": "Dados Cadastrais",
         "path": "/dados_cadastrais",
-        "iconSrc": "/icons/users.svg"
+        "iconSrc": "/icons/users.svg",
+        "showInSideBar": true
     },
     "ajuda": {
         "id": 4,
         "title": "Ajuda",
         "subTitle": "Ajuda",
         "path": "/ajuda",
-        "iconSrc": "/icons/help.svg"
+        "iconSrc": "/icons/help.svg",
+        "showInSideBar": true
+    },
+    "convites": {
+        "id": 5,
+        "title": "Convites",
+        "subTitle": "Convites do usuário para entrar em grupos",
+        "path": "/convites",
+        "iconSrc": "/icons/envelope_b.svg",
+        "showInSideBar": false
     }
 }
