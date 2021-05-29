@@ -22,8 +22,6 @@ export class AuthService {
 
     public static decodeToken(): any {
         const token = this.getToken()
-        const result = jwt_decode(token)
-    
-        return result
+        return token ? jwt_decode(token) : undefined
     }
 }

@@ -1,10 +1,11 @@
 import { Collapse } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import CardContainer from '../../components/base/CardContainer'
 import CadastroQuestionario from '../../components/CadastroQuestionario/CadastroQuestionario'
 import DeletarQuestionario from '../../components/DeletarQuestionario/DeletarQuestionario'
 import DeletarMembro from '../../components/DeletarMembro/DeletarMembro'
 import ConvidarMembro from '../../components/ConvidarMembro/ConvidarMembro'
+import EditInPlace from '../../components/EditInPlace/EditInPlace'
 import styles from '../../styles/pages/grupo_detalhes.module.css'
 import RoundedButton, { ButtonKind } from '../../components/base/RoundedButton'
 import { api } from '../../services/api'
@@ -13,31 +14,43 @@ import { Questionnaire } from '../../domain/model/questionnaire'
 import Link from 'next/link'
 import { AuthService } from '../../services/auth'
 import { User } from '../../domain/model/user'
+import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
+import { UserContext } from '../../contexts/UserContext'
+
 const { Panel } = Collapse
+
+const URI = 'groups'
 
 interface IGroupProps {
     group: Group
 }
 
 const GroupDetails = ({ group }: IGroupProps) => {
+    const { user, setUser } = useContext(UserContext)
     const [visibleAddQuestionnaire, setVisibleAddQuestionnaire] = useState(false)
     const [visibleInvite, setVisibleInvite] = useState(false)
     const [visibleDelQuestionnaire, setVisibleDelQuestionnaire] = useState(false)
     const [visibleDelMember, setVisibleDelMember] = useState(false)
     const [groupId, setGroupId] = useState('')
+    const [groupName, setGroupName] = useState('')
     const [questionnaire, setQuestionnaire] = useState(new Questionnaire())
-    const [loggedUserId, setLoggedUserId] = useState('')
     const [member, setMember] = useState(new User())
 
     const grupo = new Group().fromJSON(group)
 
     useEffect(() => {
-        const user = AuthService.decodeToken().user
-        setLoggedUserId(user.id)
+        const decoded = AuthService.decodeToken()
+
+        if (decoded !== undefined) {
+            const userContext = new User().fromJSON(decoded.user)
+            setUser(userContext)
+        }
+
+        setGroupName(group.name)
     }, [])
 
     function checkAdmin(): boolean {
-        return group.administrator.id === loggedUserId
+        return group.administrator.id === user.id
     }
 
     function renderButton(label: string, buttonLabel: string) {
@@ -76,6 +89,18 @@ const GroupDetails = ({ group }: IGroupProps) => {
         setVisibleDelMember(true)
     }
 
+    async function updateGroupName(groupName: string) {
+        await api.patch(URI.concat(`/${group.id}`), { name: groupName, administrator: { id: user.id } })
+            .then((res: any) => {
+                setGroupName(groupName)
+                openSuccessNotification('Atualizado com sucesso!')
+                setTimeout(() => window.location.reload(), 1000)
+            })
+            .catch((err: any) => {
+                openErrorNotification(err.response.data)
+            })
+    }
+
     return (
         <div>
             <CadastroQuestionario visible={visibleAddQuestionnaire} setVisible={setVisibleAddQuestionnaire} groupId={groupId} />
@@ -84,7 +109,8 @@ const GroupDetails = ({ group }: IGroupProps) => {
             <DeletarMembro visible={visibleDelMember} setVisible={setVisibleDelMember} group={group} member={member} />
 
             <CardContainer >
-                <h1 className={styles.titleHolder}>{grupo.name}</h1>
+                <EditInPlace name={groupName} isAdmin={checkAdmin()} onChangeValue={updateGroupName} />
+
                 <div>
                     <Collapse defaultActiveKey={['0']}>
 
@@ -103,7 +129,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                         type="button"
                                                         className={styles.buttons}
                                                         onClick={e => handleDeleteMember(e, member)}
-                                                        style={checkAdmin() ? {} : { visibility: 'hidden' }} >
+                                                        style={checkAdmin() ? { visibility: 'visible' } : { visibility: 'hidden' }} >
                                                         <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                     </button>
                                                 </li>
@@ -138,7 +164,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                                                             type="button"
                                                             className={styles.buttons}
                                                             onClick={e => handleDelete(e, questionnair)}
-                                                            style={checkAdmin() ? {} : { visibility: 'hidden' }}
+                                                            style={checkAdmin() ? { visibility: 'visible' } : { visibility: 'hidden' }}
                                                         >
                                                             <img src="/icons/lixeira.svg" alt="Icone de deletar" />
                                                         </button>

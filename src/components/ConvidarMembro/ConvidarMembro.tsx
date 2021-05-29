@@ -85,7 +85,7 @@ const ConvidarMembro: React.FC<IConvidarMembroProps> = ({ visible, setVisible, g
                 })
                 .catch((err: any) => {
                     setVisible(false)
-                    openErrorNotification(err.response.data)
+                    openErrorNotification(err)
                 })
         },
         validate: (values: IConvidarMembroValues) => {

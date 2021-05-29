@@ -25,13 +25,15 @@ export default function Grupo() {
         getGroups()
     }, [])
 
-    async function getGroups() {
-        await api.get(URI)
+    function getGroups() {
+        api.get(URI)
             .then((res: any) => {
                 setGroups(res.data)
                 setGroupsMapped(mapGroups(res.data))
             })
-            .catch((err: any) => openErrorNotification(err.response.data))
+            .catch((err: any) =>
+                openErrorNotification(err)
+            )
     }
 
     function filterGroups(e) {
