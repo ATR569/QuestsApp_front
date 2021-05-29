@@ -96,7 +96,7 @@ const GroupDetails = ({ group }: IGroupProps) => {
                 setTimeout(() => router.reload(), 1000)
             })
             .catch((err: any) => {
-                openErrorNotification(err.response.data)
+                openErrorNotification(err)
             })
     }
 
