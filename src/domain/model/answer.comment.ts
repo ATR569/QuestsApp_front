@@ -2,19 +2,19 @@ import { Entity } from './entity'
 import { IJSONTransformable } from './json.transformer.interface'
 
 export class AnswerComment extends Entity implements IJSONTransformable<AnswerComment> {
-    private _description?: string
+    private _comment?: string
     private _score?: number
 
-    set description(description: string) {
-        this._description = description
+    set comment(comment: string) {
+        this._comment = comment
     }
 
     set score(score: number) {
         this._score = score
     }
 
-    get description(): string {
-        return this._description
+    get comment(): string {
+        return this._comment
     }
 
     get score(): number {
@@ -24,7 +24,7 @@ export class AnswerComment extends Entity implements IJSONTransformable<AnswerCo
     public toJSON(): object {
         const json = {
             id: this.id,
-            description: this.description,
+            comment: this.comment,
             score: this.score
         }
 
@@ -37,7 +37,7 @@ export class AnswerComment extends Entity implements IJSONTransformable<AnswerCo
         }
 
         if (json.id !== undefined) this.id = json.id
-        if (json.description !== undefined) this.description = json.description
+        if (json.comment !== undefined) this.comment = json.comment
         if (json.score !== undefined) this.score = json.score
 
         return this

@@ -1,0 +1,97 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.description {
+    text-align: justify;
+    padding: 10px;
+    line-height: 2rem;
+    font-size: 1.5rem;
+}
+
+.textAreaRes {
+    border: none;
+    outline: none;
+
+    padding: 8px;
+
+    text-align: justify;
+    line-height: 1.25rem;
+    resize: none;
+}
+
+.containerResp {
+    display: flex;
+    flex-direction: column;
+
+    background: #d3d3d3;
+
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    text-align: justify;
+    line-height: 1.25rem;
+    resize: none;
+
+    margin: 10px;
+    padding: 1rem;
+}
+
+.resp {
+    display: flex;
+    justify-content: space-between;
+
+    text-align: justify;
+    padding: 0 0 5px 5px;
+}
+
+.containerComments {
+    display: flex;
+    flex-direction: column;
+}
+
+.containerNewComment {
+    display: flex;
+    width: 100%;
+}
+
+.containerTextAreaComment {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.textAreaComment {
+    border: none;
+    border-radius: 10px;
+    height: 100%;
+    outline: none;
+    padding: 8px;
+    text-align: justify;
+    line-height: 1.25rem;
+    resize: none;
+}
+
+.btnTextSendCom {
+    width: 50px;
+}
+
+.btn button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 50px;
+    background: none;
+    color: inherit;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}

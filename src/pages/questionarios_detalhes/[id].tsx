@@ -9,14 +9,15 @@ import { Questionnaire } from '../../domain/model/questionnaire'
 import { api } from '../../services/api'
 import { AuthService } from '../../services/auth'
 import styles from '../../styles/pages/questionarios_detalhes.module.css'
+import Link from 'next/link'
 
 const { Panel } = Collapse
 
-interface IGroupProps {
+interface IQuestionnairProps {
     questionnaire: Questionnaire
 }
 
-const QuestionnairesDetails = ({ questionnaire }: IGroupProps) => {
+const QuestionnairesDetails = ({ questionnaire }: IQuestionnairProps) => {
     const [visibleQuestion, setVisibleQuestion] = useState(false)
     const [visibleModalConfirm, setVisibleModalConfirm] = useState(false)
     const [questionnaireId, setQuestionnaireId] = useState('')
@@ -79,7 +80,9 @@ const QuestionnairesDetails = ({ questionnaire }: IGroupProps) => {
                                                     </div>
                                                     <div className={styles.containerButton}>
                                                         <button type="button" className={styles.buttons}>
+                                                            <Link href={`/questoes_detalhes/${questions.id}`}>
                                                             <img src="/icons/eye.svg" alt="Icone de visualizar" style={{ width: "28px", height: "28px" }} />
+                                                            </Link>
                                                         </button>
 
                                                         {checkAdmin(questions.creator.id, creatorId) ? (
