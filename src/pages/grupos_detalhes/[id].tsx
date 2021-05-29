@@ -16,6 +16,8 @@ import { AuthService } from '../../services/auth'
 import { User } from '../../domain/model/user'
 import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
 import { UserContext } from '../../contexts/UserContext'
+import { useRouter } from 'next/router'
+import cookie from 'react-cookies'
 
 const { Panel } = Collapse
 
@@ -26,7 +28,7 @@ interface IGroupProps {
 }
 
 const GroupDetails = ({ group }: IGroupProps) => {
-    const { user, setUser } = useContext(UserContext)
+    const { user } = useContext(UserContext)
     const [visibleAddQuestionnaire, setVisibleAddQuestionnaire] = useState(false)
     const [visibleInvite, setVisibleInvite] = useState(false)
     const [visibleDelQuestionnaire, setVisibleDelQuestionnaire] = useState(false)
@@ -35,17 +37,11 @@ const GroupDetails = ({ group }: IGroupProps) => {
     const [groupName, setGroupName] = useState('')
     const [questionnaire, setQuestionnaire] = useState(new Questionnaire())
     const [member, setMember] = useState(new User())
+    const router = useRouter()
 
     const grupo = new Group().fromJSON(group)
 
     useEffect(() => {
-        const decoded = AuthService.decodeToken()
-
-        if (decoded !== undefined) {
-            const userContext = new User().fromJSON(decoded.user)
-            setUser(userContext)
-        }
-
         setGroupName(group.name)
     }, [])
 
@@ -90,11 +86,14 @@ const GroupDetails = ({ group }: IGroupProps) => {
     }
 
     async function updateGroupName(groupName: string) {
-        await api.patch(URI.concat(`/${group.id}`), { name: groupName, administrator: { id: user.id } })
+        const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
+        const values = { name: groupName, administrator: { id: user.id } }
+
+        await api.patch(URI.concat(`/${group.id}`), values, headers)
             .then((res: any) => {
                 setGroupName(groupName)
                 openSuccessNotification('Atualizado com sucesso!')
-                setTimeout(() => window.location.reload(), 1000)
+                setTimeout(() => router.reload(), 1000)
             })
             .catch((err: any) => {
                 openErrorNotification(err.response.data)
@@ -186,13 +185,12 @@ const GroupDetails = ({ group }: IGroupProps) => {
 
 export default GroupDetails
 
-export async function getServerSideProps(ctx) {
-    const { id } = ctx.query
-    const { data } = await api.get(`groups/${id}`)
+export async function getServerSideProps(ctx: any) {
+    const token = ctx.req.cookies.questsapp
+    const headers = { headers: { authorization: `Bearer ${token}` } }
 
-    return {
-        props: {
-            group: data
-        }
-    }
+    const { id } = ctx.query
+    const result = await api.get(`${URI}/${id}`, headers)
+
+    return result ? { props: { group: result.data } } : { props: { group: undefined } }
 }

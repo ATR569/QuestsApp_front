@@ -1,23 +1,29 @@
 import jwt_decode from "jwt-decode"
+import cookie from 'react-cookies'
 
 export class AuthService {
-    private static readonly TOKEN_KEY: string = '@questsapp'
+    private static readonly TOKEN_KEY: string = 'questsapp'
 
-    public static isAuthenticated(): Boolean {
-        const token = localStorage.getItem(this.TOKEN_KEY)
-        return token !== null; // TO DO
+    public static isAuthenticated(): boolean {
+        const token = this.getToken()
+        return !!token // TO DO
     }
 
     public static getToken(): string {
-        return localStorage.getItem(this.TOKEN_KEY)
+        const token = cookie.load(this.TOKEN_KEY)
+        return token
     }
 
     public static storeToken(token: string): void {
-        localStorage.setItem(this.TOKEN_KEY, token)
+        const options = {
+            path: '/'
+        }
+
+        cookie.save(this.TOKEN_KEY, token, options)
     }
 
     public static removeToken(): void {
-        localStorage.removeItem(this.TOKEN_KEY)
+        cookie.remove(this.TOKEN_KEY)
     }
 
     public static decodeToken(): any {

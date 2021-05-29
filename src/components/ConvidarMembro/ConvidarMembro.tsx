@@ -6,6 +6,8 @@ import { Modal } from 'antd'
 import { Form, withFormik, FormikErrors } from 'formik'
 import { api } from '../../services/api'
 import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
+import { useRouter } from 'next/router'
+import { AuthService } from '../../services/auth'
 
 const URI = 'invites'
 
@@ -24,6 +26,7 @@ interface IFormProps {
 }
 
 const ConvidarMembro: React.FC<IConvidarMembroProps> = ({ visible, setVisible, groupId }) => {
+    const router = useRouter()
 
     const handleCancelar = (event: Event) => {
         event.preventDefault()
@@ -71,21 +74,22 @@ const ConvidarMembro: React.FC<IConvidarMembroProps> = ({ visible, setVisible, g
     const ConviteMembroForm = withFormik<IFormProps, IConvidarMembroValues>({
         mapPropsToValues: () => ({ email: '', groupId: groupId }),
         handleSubmit: async (values) => {
+            const body = { user: { email: values.email }, group: { id: groupId } }
+            const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
 
-            const body = {
-                user: { email: values.email },
-                group: { id: groupId }
-            }
-
-            await api.post(URI, body)
+            await api.post(URI, body, headers)
                 .then((res: any) => {
                     setVisible(false)
                     openSuccessNotification('Convite enviado com sucesso!')
-                    setTimeout(() => { window.location.reload() }, 1000)
+                    setTimeout(() => { router.reload() }, 1000)
                 })
                 .catch((err: any) => {
-                    setVisible(false)
                     openErrorNotification(err)
+                    setVisible(false)
+                    if (err.response && err.response.status === 401) {
+                        AuthService.removeToken()
+                        setTimeout(() => router.push('/').then(() => router.reload()), 1000)
+                    }
                 })
         },
         validate: (values: IConvidarMembroValues) => {
