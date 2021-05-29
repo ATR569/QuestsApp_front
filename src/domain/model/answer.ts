@@ -5,7 +5,7 @@ import { AnswerComment } from './answer.comment'
 export class Answer extends Entity implements IJSONTransformable<Answer> {
     private _description?: string
     private _score?: number
-    private _comments?: Array<AnswerComment>
+    private _answerComments?: Array<AnswerComment>
 
     set description(description: string) {
         this._description = description
@@ -15,8 +15,8 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
         this._score = score
     }
 
-    set comments(comments: Array<AnswerComment>) {
-        this._comments = comments
+    set answerComments(comments: Array<AnswerComment>) {
+        this._answerComments = comments
     }
 
     get description(): string {
@@ -27,8 +27,8 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
         return this._score
     }
 
-    get comments(): Array<AnswerComment> {
-        return this._comments
+    get answerComments(): Array<AnswerComment> {
+        return this._answerComments
     }
 
     public toJSON(): object {
@@ -36,7 +36,7 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
             id: this.id,
             description: this.description,
             score: this.score,
-            comments: this.comments,
+            answerComments: this.answerComments,
         }
 
         return json
@@ -51,7 +51,7 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
         if (json.description !== undefined) this.description = json.description
         if (json.score !== undefined) this.score = json.score
         if (json.comments !== undefined && json.comments instanceof Array) {
-            this.comments = json.comments.map((comment: any) => new AnswerComment().fromJSON(comment))
+            this.answerComments = json.comments.map((comment: any) => new AnswerComment().fromJSON(comment))
         }
 
         return this
