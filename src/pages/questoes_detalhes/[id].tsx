@@ -116,8 +116,7 @@ const QuestionsDetails = ({ question }: IQuestionProps) => {
             <EditAnswer visible={visibleEditAnswer} setVisible={setVisibleEditAnswer} answerId={answerId} oldDescription={oldDescription} />
 
             <CardContainer >
-                <EditInPlace name={question.description} isAdmin={checkAdmin(question.creator.id)} onChangeValue={editQuestionDesc} />
-
+                <EditInPlace name={question.description} isAdmin={true} onChangeValue={editQuestionDesc} style={{ fontSize: '1.2rem' }} />
                 <div className={styles.container}>
                     <div className={styles.containerResp}>
                         <div className={styles.resp}>
