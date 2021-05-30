@@ -21,7 +21,7 @@
         "subTitle": "Dados Cadastrais",
         "path": "/dados_cadastrais",
         "iconSrc": "/icons/users.svg",
-        "showInSideBar": true
+        "showInSideBar": false
     },
     "ajuda": {
         "id": 4,

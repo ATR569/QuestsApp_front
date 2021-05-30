@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: center;
     justify-items: center;
+    width: 100%;
 }
 
 .description {
@@ -13,7 +14,11 @@
     font-size: 1.5rem;
 }
 
-.textAreaRes {
+.textAreaResp{
+    width: 100%;
+}
+
+.textAreaResp textarea {
     border: none;
     outline: none;
 
@@ -22,6 +27,8 @@
     text-align: justify;
     line-height: 1.25rem;
     resize: none;
+
+    width: 100%;
 }
 
 .containerResp {
@@ -29,7 +36,7 @@
     flex-direction: column;
 
     background: #d3d3d3;
-    max-width: 80%;
+    width: 80%;
 
     border: none;
     outline: none;
@@ -45,6 +52,7 @@
 .resp {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 
     text-align: justify;
     padding: 0 0 5px 5px;
@@ -53,11 +61,17 @@
 .respDescription {
     padding-right: 10px;
     text-align: justify;
+    width: 100%;
+}
+
+.containerResp p {
+    color: var(--dark-gray-text)
 }
 
 .containerComments {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .containerNewComment {
@@ -67,15 +81,17 @@
 
 .containerTextAreaComment {
     display: flex;
+    flex-direction: column;
     margin-bottom: 10px;
     width: 100%;
     height: 100%;
 }
 
-.textAreaComment {
+.containerTextAreaComment textarea {
     border: none;
     border-radius: 10px;
     height: 100%;
+    width: 100%;
     outline: none;
     padding: 8px;
     text-align: justify;

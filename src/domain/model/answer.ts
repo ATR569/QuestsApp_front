@@ -52,7 +52,7 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
 
         return json
     }
-    
+
     public fromJSON(json: any): Answer {
         if (json === undefined) {
             json = {}
@@ -64,7 +64,7 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
         if (json.comments !== undefined && json.comments instanceof Array) {
             this.answerComments = json.comments.map((comment: any) => new AnswerComment().fromJSON(comment))
         }
-        if (json.author !== undefined) this.author = json.author
+        if (json.author !== undefined) this.author = new User().fromJSON(json.author)
 
         return this
     }

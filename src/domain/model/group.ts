@@ -82,7 +82,7 @@ export class Group extends Entity implements IJSONTransformable<Group> {
 
         if (json.id !== undefined) this.id = json.id
         if (json.name !== undefined) this.name = json.name
-        if (json.administrator !== undefined) this.administrator = json.administrator
+        if (json.administrator !== undefined) this.administrator = new User().fromJSON(json.administrator)
         if (json.members !== undefined) this.members = json.members
         if (json.questionnaires !== undefined) this.questionnaires = json.questionnaires
 

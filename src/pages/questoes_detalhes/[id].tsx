@@ -117,39 +117,38 @@ const QuestionsDetails = ({ question }: IQuestionProps) => {
 
             <CardContainer >
                 <EditInPlace name={question.description} isAdmin={checkAdmin(question.creator.id)} onChangeValue={editQuestionDesc} />
+
                 <div className={styles.container}>
                     <div className={styles.containerResp}>
                         <div className={styles.resp}>
                             <div className={styles.textAreaResp}>
                                 <textarea
-                                    className={styles.textAreaRes}
                                     rows={5}
-                                    cols={112}
                                     value={textAreaRespValue}
                                     onChange={(event) => {
                                         setTextAreaRespValue(event.target.value)
                                     }}
                                 />
                             </div>
+
                             <div className={styles.btn}>
-                                <button
-                                    type="button"
-                                    className={styles.btnTextSendRes}
-                                    onClick={() => sendAnswer(question.id, textAreaRespValue)}
-                                >
+                                <button type="button" onClick={() => sendAnswer(question.id, textAreaRespValue)} >
                                     <img src="/icons/send.svg" alt="Enviar Resposta" />
                                 </button>
                             </div>
                         </div>
                     </div>
+
                     {question.answers.length > 0 ? (
                         question.answers.map(answer => {
                             return (
                                 <div className={styles.containerResp} key={answer.id}>
                                     <div className={styles.resp}>
                                         <div className={styles.respDescription}>
+                                            <p>{`Autor: ${answer.author.name}`}</p>
                                             <span>{answer.description}</span>
                                         </div>
+
                                         <div className={styles.btn}>
                                             {checkAdmin(answer.author.id) ? (
                                                 <button
@@ -167,6 +166,7 @@ const QuestionsDetails = ({ question }: IQuestionProps) => {
                                             ) : (<></>)}
                                         </div>
                                     </div>
+
                                     <div className={styles.containerBtnLike}>
                                         <button
                                             type="button"
@@ -177,21 +177,24 @@ const QuestionsDetails = ({ question }: IQuestionProps) => {
                                         >
                                             <img src="/icons/like.svg" alt="Curtir resposta" />
                                         </button>
+
                                         <span>|</span>
+
                                         <span>{answer.score}</span>
                                     </div>
+
                                     <div className={styles.containerComments}>
                                         <div className={styles.containerNewComment}>
                                             <div className={styles.containerTextAreaComment}>
                                                 <textarea
                                                     rows={2}
-                                                    cols={112}
                                                     className={styles.textAreaComment}
                                                     onChange={(event) => {
                                                         setTextAreaCommentValue(event.target.value)
                                                     }}
                                                 />
                                             </div>
+
                                             <div className={styles.btn}>
                                                 <button
                                                     type="button"
@@ -214,6 +217,7 @@ const QuestionsDetails = ({ question }: IQuestionProps) => {
                                                             value={answerComment.comment}
                                                             onChange={(event) => { }}
                                                         />
+                                                        <p>{`Autor: ${answerComment.author.name}`}</p>
                                                     </div>
                                                 )
                                             })
