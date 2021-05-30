@@ -4,10 +4,11 @@ import styles from './EditInPlace.module.css'
 interface IFilterProps {
     name: string
     isAdmin?: boolean
+    style?: any
     onChangeValue: (any) => void
 }
 
-const EditInPlace: React.FC<IFilterProps> = ({ name, isAdmin = false, onChangeValue }) => {
+const EditInPlace: React.FC<IFilterProps> = ({ name, isAdmin = false, onChangeValue, style }) => {
     const inputRef = useRef(null)
 
     const [isEditing, setIsEditing] = useState(false)
@@ -39,7 +40,7 @@ const EditInPlace: React.FC<IFilterProps> = ({ name, isAdmin = false, onChangeVa
                     </div>
 
                     <div className={styles.container_ipt}>
-                        <input className={styles.ipt} defaultValue={name} ref={inputRef} type='text' />
+                        <input className={styles.ipt} defaultValue={name} ref={inputRef} type='text' style={style} />
                     </div>
                 </div>
             ) : (
@@ -50,7 +51,7 @@ const EditInPlace: React.FC<IFilterProps> = ({ name, isAdmin = false, onChangeVa
                         </button>
                     </div>
 
-                    <h1 className={styles.title} >{name}</h1>
+                    <h1 className={styles.title} style={style} >{name}</h1>
                 </div>
             )}
         </div>
