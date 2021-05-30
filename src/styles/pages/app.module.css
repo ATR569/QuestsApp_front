@@ -1,7 +1,10 @@
 .app {
 	display: flex;
-	background-image: url('/background.wide.jpg');
+	background: url('/background.wide.jpg');
+	background-position: center center;
+	background-repeat: no-repeat;
 	background-attachment: fixed;
+	background-size: cover;
 }
 
 .appTemplate {
