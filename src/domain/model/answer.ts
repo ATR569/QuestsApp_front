@@ -1,11 +1,13 @@
 import { Entity } from './entity'
 import { IJSONTransformable } from './json.transformer.interface'
 import { AnswerComment } from './answer.comment'
+import { User } from './user'
 
 export class Answer extends Entity implements IJSONTransformable<Answer> {
     private _description?: string
     private _score?: number
-    private _comments?: Array<AnswerComment>
+    private _answerComments?: Array<AnswerComment>
+    private _author?: User
 
     set description(description: string) {
         this._description = description
@@ -15,8 +17,12 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
         this._score = score
     }
 
-    set comments(comments: Array<AnswerComment>) {
-        this._comments = comments
+    set answerComments(comments: Array<AnswerComment>) {
+        this._answerComments = comments
+    }
+
+    set author(author: User) {
+        this._author = author
     }
 
     get description(): string {
@@ -27,8 +33,12 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
         return this._score
     }
 
-    get comments(): Array<AnswerComment> {
-        return this._comments
+    get answerComments(): Array<AnswerComment> {
+        return this._answerComments
+    }
+
+    get author(): User {
+        return this._author
     }
 
     public toJSON(): object {
@@ -36,7 +46,8 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
             id: this.id,
             description: this.description,
             score: this.score,
-            comments: this.comments,
+            answerComments: this.answerComments,
+            author: this.author,
         }
 
         return json
@@ -51,8 +62,9 @@ export class Answer extends Entity implements IJSONTransformable<Answer> {
         if (json.description !== undefined) this.description = json.description
         if (json.score !== undefined) this.score = json.score
         if (json.comments !== undefined && json.comments instanceof Array) {
-            this.comments = json.comments.map((comment: any) => new AnswerComment().fromJSON(comment))
+            this.answerComments = json.comments.map((comment: any) => new AnswerComment().fromJSON(comment))
         }
+        if (json.author !== undefined) this.author = json.author
 
         return this
     }

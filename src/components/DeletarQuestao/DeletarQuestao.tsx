@@ -5,6 +5,8 @@ import { Modal } from 'antd'
 import { api } from '../../services/api'
 import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
 import { Question } from '../../domain/model/question'
+import { useRouter } from 'next/router'
+import { AuthService } from '../../services/auth'
 
 const URI = 'questions'
 
@@ -15,6 +17,7 @@ interface IDeletarQuestaoProps {
 }
 
 const DeletarQuestao: React.FC<IDeletarQuestaoProps> = ({ visible, setVisible, question }) => {
+    const router = useRouter()
 
     const handleCancelar = (event: Event) => {
         event.preventDefault()
@@ -22,19 +25,24 @@ const DeletarQuestao: React.FC<IDeletarQuestaoProps> = ({ visible, setVisible, q
     }
 
     const handleExcluir = async (event: Event) => {
+        const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
         event.preventDefault()
         setVisible(true)
 
-        await api.delete(URI.concat(`/${question.id}`))
+        await api.delete(URI.concat(`/${question.id}`), headers)
             .then((res: any) => {
                 openSuccessNotification('Deletado com sucesso!')
                 setVisible(false)
                 setTimeout(() => {
-                    window.location.reload()
+                    router.reload()
                 }, 1000)
             })
             .catch((err: any) => {
                 openErrorNotification(err)
+                if (err.response && err.response.status === 401) {
+                    AuthService.removeToken()
+                    setTimeout(() =>  router.push('/').then(() => router.reload()) , 1000)
+                }
             })
     }
 

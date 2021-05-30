@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { UserContext } from '../../contexts/UserContext'
 import { Group } from '../../domain/model/group'
-import { AuthService } from '../../services/auth'
 import DeletarGrupo from '../DeletarGrupo/DeletarGrupo'
 import styles from './CardGroup.module.css'
 
@@ -11,12 +11,7 @@ interface IGroupProps {
 const CardGroup: React.FC<IGroupProps> = ({ group }) => {
 
     const [visible, setVisible] = useState(false)
-    const [loggedUserId, setLoggedUserId] = useState('')
-
-    useEffect(() => {
-        const user = AuthService.decodeToken().user
-        setLoggedUserId(user.id)
-    }, [])
+    const { user } = useContext(UserContext)
 
     const handleDelete = (event: any) => {
         event.preventDefault()
@@ -24,7 +19,7 @@ const CardGroup: React.FC<IGroupProps> = ({ group }) => {
     }
 
     function checkAdmin(groupAdministratorId: string): boolean {
-        return groupAdministratorId === loggedUserId
+        return groupAdministratorId === user.id
     }
 
     return (

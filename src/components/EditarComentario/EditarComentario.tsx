@@ -1,32 +1,31 @@
-import React, { useContext } from 'react'
-import styles from './CadastroGrupo.module.css'
-import RoundedButton, { ButtonKind } from '../base/RoundedButton'
-import InputForm from '../base/InputForm'
 import { Modal } from 'antd'
-import { Form, withFormik, FormikErrors } from 'formik'
-import { api } from '../../services/api'
-import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
-import { UserContext } from '../../contexts/UserContext'
-import { AuthService } from '../../services/auth'
+import { Form, FormikErrors, withFormik } from 'formik'
 import { useRouter } from 'next/router'
+import React from 'react'
+import { api } from '../../services/api'
+import { AuthService } from '../../services/auth'
+import { openErrorNotification, openSuccessNotification } from '../../utils/notification'
+import RoundedButton, { ButtonKind } from '../base/RoundedButton'
+import styles from './EditarComentario.module.css'
 
-const URI = 'groups'
+const URI = 'answers'
 
-interface ICadastroGrupoProps {
+interface IEditAnswerProps {
     visible: boolean
     setVisible: (value: boolean) => void
+    oldDescription: string
+    answerId: string
 }
 
-interface ICadastroGrupoValues {
-    name: string
+interface IEditAnswerValues {
+    description: string
 }
 
 interface IFormProps {
-    name?: string
+    description?: string
 }
 
-const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) => {
-    const { user } = useContext(UserContext)
+const EditAnswer: React.FC<IEditAnswerProps> = ({ visible, setVisible, answerId, oldDescription }) => {
     const router = useRouter()
 
     const handleCancelar = (event: Event) => {
@@ -36,7 +35,6 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
 
     const renderInnerForm = (props) => {
         const {
-            values,
             touched,
             errors,
             handleChange,
@@ -46,13 +44,15 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
         return (
             <div className={styles.form}>
                 <Form>
-                    <InputForm
-                        label="Nome do grupo de Estudo"
+                    <textarea
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.name}
-                        name={'name'} />
-                    {errors.name && touched.name && <div className={styles.feedback}>{errors.name}</div>}
+                        name={'description'}
+                        className={styles.editComment}
+                    >
+                        {oldDescription}
+                    </textarea>
+                    {errors.description && touched.description && <div className={styles.feedback}>{errors.description}</div>}
                     <div className={styles.buttons}>
                         <RoundedButton
                             label="Cancelar"
@@ -71,29 +71,30 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
         )
     }
 
-    const CadastroGrupoForm = withFormik<IFormProps, ICadastroGrupoValues>({
-        mapPropsToValues: () => ({ name: '', administrator: { id: user.id } }),
+    const EditAnswerForm = withFormik<IFormProps, IEditAnswerValues>({
+        mapPropsToValues: () => ({ description: '', answerId: answerId }),
         handleSubmit: async (values) => {
             const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
-            await api.post(URI, values, headers)
+
+            await api.patch(URI.concat(`/${answerId}`), values, headers)
                 .then((res: any) => {
                     openSuccessNotification('Salvo com sucesso!')
                     setVisible(false)
-                    setTimeout(() =>  router.reload() , 1000)
+                    setTimeout(() => router.reload(), 1000)
                 })
                 .catch((err: any) => {
                     openErrorNotification(err)
                     if (err.response && err.response.status === 401) {
                         AuthService.removeToken()
-                        setTimeout(() =>  router.push('/').then(() => router.reload()) , 1000)
+                        setTimeout(() => router.push('/').then(() => router.reload()), 1000)
                     }
                 })
         },
-        validate: (values: ICadastroGrupoValues) => {
-            let errors: FormikErrors<ICadastroGrupoValues> = {}
+        validate: (values: IEditAnswerValues) => {
+            let errors: FormikErrors<IEditAnswerValues> = {}
 
-            if (!values.name) {
-                errors.name = 'O nome do grupo é obrigatório!'
+            if (!values.description) {
+                errors.description = 'O comentário é obrigatória!'
             }
 
             return errors;
@@ -103,18 +104,18 @@ const CadastroGrupo: React.FC<ICadastroGrupoProps> = ({ visible, setVisible }) =
     return (
         <Modal
             className={styles.modal}
-            title={<div className={styles.title}> Novo Grupo de Estudos </div>}
+            title={<div className={styles.title}> Editar Comentário </div>}
             closable={false}
             centered
             visible={visible}
             footer="">
 
             <div className={styles.content}>
-                <CadastroGrupoForm />
+                <EditAnswerForm />
             </div>
 
         </Modal>
     )
 }
 
-export default CadastroGrupo
+export default EditAnswer
