@@ -1,6 +1,11 @@
 import { Collapse } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useContext, useEffect, useState } from 'react'
 import CardContainer from '../../components/base/CardContainer'
+import EditAnswer from '../../components/EditarComentario/EditarComentario'
+import EditInPlace from '../../components/EditInPlace/EditInPlace'
+import { UserContext } from '../../contexts/UserContext'
+import { Answer } from '../../domain/model/answer'
 import { Question } from '../../domain/model/question'
 import { api } from '../../services/api'
 import { AuthService } from '../../services/auth'
@@ -14,71 +19,105 @@ interface IQuestionProps {
 }
 
 const QuestionsDetails = ({ question }: IQuestionProps) => {
-    const [creatorId, setCreatorId] = useState('')
+    const [visibleEditAnswer, setVisibleEditAnswer] = useState(false)
     const [textAreaRespValue, setTextAreaRespValue] = useState('')
     const [textAreaCommentValue, setTextAreaCommentValue] = useState('')
-
-    console.log('Question: ', question)
-
-    useEffect(() => {
-        const user = AuthService.decodeToken().user
-        setCreatorId(user.id)
-    }, [])
+    const [oldDescription, setOldDescription] = useState('')
+    const [answerId, setAnswerId] = useState('')
+    const { user } = useContext(UserContext)
+    const router = useRouter()
 
     async function sendAnswer(questionId: string, description: string) {
+        const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
 
         const answer = {
             description: description,
             author: {
-                id: creatorId
+                id: user.id
             },
             questionId: questionId
         }
 
-        await api.post('/answers', answer)
+        await api.post('/answers', answer, headers)
             .then((res: any) => {
                 openSuccessNotification('Enviado com sucesso!')
-                window.location.reload()
+                setTimeout(() => router.reload(), 1000)
             })
             .catch((err: any) => {
-                openErrorNotification(err.response.data)
+                openErrorNotification(err)
+                if (err.response && err.response.status === 401) {
+                    AuthService.removeToken()
+                    setTimeout(() => router.push('/').then(() => router.reload()), 1000)
+                }
             })
     }
 
     async function sendComment(answerId: string, comment: string) {
+        const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
 
         const answerComment = {
             comment: comment,
             answerId: answerId,
             author: {
-                id: creatorId
+                id: user.id
             }
         }
 
-        await api.post('/answercomment', answerComment)
+        await api.post('/answercomment', answerComment, headers)
             .then((res: any) => {
                 openSuccessNotification('Enviado com sucesso!')
                 window.location.reload()
             })
             .catch((err: any) => {
-                openErrorNotification(err.response.data)
+                openErrorNotification(err)
+                if (err.response && err.response.status === 401) {
+                    AuthService.removeToken()
+                    setTimeout(() => router.push('/').then(() => router.reload()), 1000)
+                }
             })
 
     }
 
     function checkAdmin(creatorAnswerId: string): boolean {
-        return creatorAnswerId === creatorId
+        return creatorAnswerId === user.id
     }
 
-    async function editComment() {
+    async function editQuestionDesc(description: string) {
+        const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
+        const values = {
+            description: description
+        }
 
+        await api.patch(`/questions/${question.id}`, values, headers)
+            .then((res: any) => {
+                openSuccessNotification('Atualizado com sucesso!')
+                setTimeout(() => router.reload(), 1000)
+            })
+            .catch((err: any) => {
+                openErrorNotification(err.response.data)
+            })
+    }
+
+    async function likeAnswer(answerId: string) {
+        const headers = { headers: { authorization: `Bearer ${AuthService.getToken()}` } }
+        const values = {}
+
+        await api.patch(`/answers/${answerId}/like`, values, headers)
+            .then((res: any) => {
+                router.reload()
+            })
+            .catch((err: any) => {
+                openErrorNotification(err.response.data)
+            })
     }
 
     return (
         <div>
+            <EditAnswer visible={visibleEditAnswer} setVisible={setVisibleEditAnswer} answerId={answerId} oldDescription={oldDescription} />
+
             <CardContainer >
+                <EditInPlace name={question.description} isAdmin={checkAdmin(question.creator.id)} onChangeValue={editQuestionDesc} />
                 <div className={styles.container}>
-                    <h1 className={styles.description}>{question.description}</h1>
                     <div className={styles.containerResp}>
                         <div className={styles.resp}>
                             <div className={styles.textAreaResp}>
@@ -112,10 +151,34 @@ const QuestionsDetails = ({ question }: IQuestionProps) => {
                                             <span>{answer.description}</span>
                                         </div>
                                         <div className={styles.btn}>
-                                            <button type="button" className={styles.btnEditResp}>
-                                                <img src="/icons/editar.svg" alt="Editar Resposta" />
-                                            </button>
+                                            {checkAdmin(answer.author.id) ? (
+                                                <button
+                                                    type="button"
+                                                    className={styles.btnEditResp}
+                                                    onClick={(event) => {
+                                                        event.stopPropagation()
+                                                        setVisibleEditAnswer(true)
+                                                        setAnswerId(answer.id)
+                                                        setOldDescription(answer.description)
+                                                    }}
+                                                >
+                                                    <img src="/icons/editar.svg" alt="Editar Resposta" />
+                                                </button>
+                                            ) : (<></>)}
                                         </div>
+                                    </div>
+                                    <div className={styles.containerBtnLike}>
+                                        <button
+                                            type="button"
+                                            onClick={(event) => {
+                                                event.stopPropagation()
+                                                likeAnswer(answer.id)
+                                            }}
+                                        >
+                                            <img src="/icons/like.svg" alt="Curtir resposta" />
+                                        </button>
+                                        <span>|</span>
+                                        <span>{answer.score}</span>
                                     </div>
                                     <div className={styles.containerComments}>
                                         <div className={styles.containerNewComment}>
@@ -141,7 +204,7 @@ const QuestionsDetails = ({ question }: IQuestionProps) => {
                                         {answer.answerComments.length > 0 ? (
                                             answer.answerComments.map(answerComment => {
                                                 return (
-                                                    <div className={styles.containerTextAreaComment}>
+                                                    <div className={styles.containerTextAreaComment} key={answerComment.id}>
                                                         <textarea
                                                             key={answerComment.id}
                                                             className={styles.textAreaComment}
@@ -169,8 +232,11 @@ const QuestionsDetails = ({ question }: IQuestionProps) => {
 export default QuestionsDetails
 
 export async function getServerSideProps(ctx) {
+    const token = ctx.req.cookies.questsapp
+    const headers = { headers: { authorization: `Bearer ${token}` } }
+
     const { id } = ctx.query
-    const { data } = await api.get(`questions/${id}`)
+    const { data } = await api.get(`questions/${id}`, headers)
 
     return {
         props: {
