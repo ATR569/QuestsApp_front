@@ -1,0 +1,14 @@
+.input{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: var(--light-gray-subtitle) solid 1px;
+    outline: none;
+    margin-bottom: 0.9rem;
+    padding: 3px 0px;
+}
+
+.label{
+    color: var(--orange);
+    font-size: .9rem;
+}

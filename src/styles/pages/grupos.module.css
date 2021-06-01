@@ -1,0 +1,18 @@
+.ancora, .ancora:hover, .ancora:visited, .ancora:active{
+    color: inherit;
+}
+
+.barra_topo{
+    border-bottom: 3px solid black;
+    border-image: linear-gradient(to right, #00000000,  #00000030, #00000000) 1;
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+.grupos{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px;
+}

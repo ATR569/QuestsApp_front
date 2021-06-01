@@ -1,0 +1,95 @@
+.card_group {
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 210px;
+    background: var(--white);
+    box-shadow: 0px 0px 8px var(--black50);
+    flex: content;
+    margin: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 2px 2px 10px 10px;
+    background-image: linear-gradient(to right, var(--light-orange), var( --yellow));
+}
+
+.del_group{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    height: 40px;
+}
+
+.img_trash {
+    height: 100%;
+    width: auto;
+    z-index: 1;
+}
+
+.buttons {
+    border: none;
+    border-radius: 25px;
+    width: 1.5rem;
+    height: 1.5rem;
+    z-index: 1;
+}
+
+.img_trash:hover{
+    transform: scale(1.5);
+}
+
+.card_group:hover{
+    transform: scale(1.1);
+}
+
+.container_img{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    height: 80px;
+    padding: 10px;
+}
+
+.img {
+    height: 100%;
+    width: auto;
+    z-index: 1;
+}
+
+.effect {
+    background-image: linear-gradient(to top, #fff5, #fff0);
+    position: absolute;
+    margin: -10px;
+    height: 100px;
+    width: 200px;
+    align-self: flex-start;
+}
+
+.title_group{
+    height: 40px;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    z-index: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.informations{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    flex-wrap: wrap;
+    font-size: 10px;
+    justify-content: space-between;
+}
+
+.informations span{
+    margin-top: 2px;
+}

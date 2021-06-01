@@ -1,0 +1,47 @@
+.listItemButtons {
+    display: flex;
+    align-items: center;
+}
+
+.listItemButtons button {
+    margin: 0px 5px;
+}
+
+.listItemDescription {
+    flex: 1;
+}
+
+.listItem {
+    display: flex;
+    width: 100%;
+}
+
+.invites {
+    width: 100%;
+}
+
+.invites li {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    border-bottom: 2px solid var(--light-gray-subtitle);
+    margin: 0 16px;
+    padding: 5px 10px;
+}
+
+.listItemStatus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 186px;
+}
+
+.accepted {
+    font-weight: bold;
+    color: green;
+}
+
+.denied {
+    font-weight: bold;
+    color: red;
+}

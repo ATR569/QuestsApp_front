@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+#log files
+*.log
+
 # dependencies
 /node_modules
 /.pnp
@@ -36,8 +39,5 @@ yarn-error.log*
 #package-lock.json
 package-lock.json
 
-#next-env.d.ts
-next-env.d.ts
-
-#tsconfig.json
-tsconfig.json
+#.env
+.env

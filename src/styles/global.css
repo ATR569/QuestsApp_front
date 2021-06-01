@@ -1,3 +1,13 @@
+@import 'antd/dist/antd.css';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial';
+    user-select: none;
+}
+
 :root {
     --light-yellow: #fff9b9;
     --orange: #f58634;
@@ -6,7 +16,9 @@
     --dark-gray-text: #606062;
     --light-gray-subtitle: #96989a;
     --brown-selected: #bb573880;
+    --dark-brown-selected: #522414af;
     --black: #000;
+    --black50: #00000080;
     --white: #fff;
 }
 
@@ -20,4 +32,15 @@
     html {
         font-size: 87.5%;
     }
+}
+
+.ant-modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.ant-modal div {
+    border: none;
 }

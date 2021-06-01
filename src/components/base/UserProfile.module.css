@@ -1,0 +1,32 @@
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.container img {
+    width: 20%;
+    margin: 3px;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    box-shadow: 0px 0px 5px var(--black);
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 5px;
+}
+
+.userName {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--orange);
+}
+
+.userInstitution {
+    font-size: 14px;
+    color: var(--light-gray-text);
+}
